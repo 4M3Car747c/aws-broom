@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.7
 
 # ---- 1. Build the SPA ----
-FROM node:24-alpine AS web
+FROM node:25-alpine AS web
 RUN corepack enable
 WORKDIR /web
 COPY web/package.json web/pnpm-lock.yaml ./
