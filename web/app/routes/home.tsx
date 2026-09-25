@@ -16,7 +16,7 @@ export function meta() {
 }
 
 const REPO = "https://github.com/4M3Car747c/aws-broom";
-const DOCKER = "docker run -d --name broom \\\n  -p 127.0.0.1:8080:8080 \\\n  -e SESSION_IDLE_TTL=30m \\\n  ghcr.io/4M3Car747c/aws-broom:main";
+const DOCKER = "docker run -d --name broom \\\n  -p 127.0.0.1:8080:8080 \\\n  -e SESSION_IDLE_TTL=30m \\\n  ghcr.io/4m3car747c/aws-broom:main";
 
 const CHIPS: [string, string][] = [
   ["ec2", "EC2"], ["auto-scaling", "Auto Scaling"], ["ebs", "EBS"], ["vpc", "VPC"], ["elb", "ELB"], ["ecs", "ECS"], ["eks", "EKS"],

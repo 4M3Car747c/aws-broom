@@ -50,12 +50,12 @@ AWS Broom 是一个免费、开源、**匿名使用**的工具，用途只有一
 
 ### 自托管
 
-镜像：`ghcr.io/4M3Car747c/aws-broom`（基于 distroless，非 root 运行，无 shell）。
+镜像：`ghcr.io/4m3car747c/aws-broom`（基于 distroless，非 root 运行，无 shell）。
 
 ```sh
 docker run -d --name broom -p 127.0.0.1:8080:8080 \
   -e SESSION_IDLE_TTL=30m \
-  ghcr.io/4M3Car747c/aws-broom:main
+  ghcr.io/4m3car747c/aws-broom:main
 ```
 
 | 环境变量 | 默认值 | 说明 |
@@ -133,12 +133,12 @@ The credentials you paste reach the memory of the server process that runs this 
 
 ### Self-hosting
 
-Image: `ghcr.io/4M3Car747c/aws-broom` (distroless, runs as non-root, no shell).
+Image: `ghcr.io/4m3car747c/aws-broom` (distroless, runs as non-root, no shell).
 
 ```sh
 docker run -d --name broom -p 127.0.0.1:8080:8080 \
   -e SESSION_IDLE_TTL=30m \
-  ghcr.io/4M3Car747c/aws-broom:main
+  ghcr.io/4m3car747c/aws-broom:main
 ```
 
 | Variable | Default | Meaning |

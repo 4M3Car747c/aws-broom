@@ -5,7 +5,7 @@
 Free, open-source web tool that wipes a PoC / sandbox AWS account. Paste temporary credentials, pick regions and services, scan, review every resource, then delete only what you confirmed. Deletion is performed by [Gruntwork's cloud-nuke](https://github.com/gruntwork-io/cloud-nuke), embedded as a library.
 
 - Docs: [Security notes](docs/security.md) · [IAM policy](docs/iam-policy.md) · [Design system](docs/design-system.md)
-- Image: `ghcr.io/4M3Car747c/aws-broom`
+- Image: `ghcr.io/4m3car747c/aws-broom`
 - License: MIT
 
 ---
@@ -26,7 +26,7 @@ Free, open-source web tool that wipes a PoC / sandbox AWS account. Paste tempora
 
 ```sh
 docker run -d --name broom -p 127.0.0.1:8080:8080 \
-  ghcr.io/4M3Car747c/aws-broom:main
+  ghcr.io/4m3car747c/aws-broom:main
 ```
 
 打开 http://127.0.0.1:8080 。环境变量与反向代理建议见 [docs/security.md](docs/security.md#自托管)。
@@ -78,7 +78,7 @@ History lives in the browser's IndexedDB. Use it only on accounts you intend to 
 
 ```sh
 docker run -d --name broom -p 127.0.0.1:8080:8080 \
-  ghcr.io/4M3Car747c/aws-broom:main
+  ghcr.io/4m3car747c/aws-broom:main
 ```
 
 Open http://127.0.0.1:8080. Environment variables and reverse-proxy advice are in [docs/security.md](docs/security.md#self-hosting).
