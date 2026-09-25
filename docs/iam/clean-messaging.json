@@ -1,0 +1,66 @@
+{
+  "Statement": [
+    {
+      "Sid": "BroomBase",
+      "Effect": "Allow",
+      "Action": [
+        "sts:GetCallerIdentity",
+        "ec2:DescribeRegions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BroomCleanMessaging",
+      "Effect": "Allow",
+      "Action": [
+        "events:DeleteArchive",
+        "events:DeleteEventBus",
+        "events:DeleteRule",
+        "events:DescribeArchive",
+        "events:ListArchives",
+        "events:ListEventBuses",
+        "events:ListRules",
+        "events:ListTagsForResource",
+        "events:ListTargetsByRule",
+        "events:RemoveTargets",
+        "firehose:DeleteDeliveryStream",
+        "firehose:ListDeliveryStreams",
+        "firehose:ListTagsForDeliveryStream",
+        "kafka:DeleteCluster",
+        "kafka:ListClustersV2",
+        "kinesis:DeleteStream",
+        "kinesis:ListStreams",
+        "kinesis:ListTagsForStream",
+        "mq:DeleteBroker",
+        "mq:ListBrokers",
+        "mq:ListTags",
+        "scheduler:DeleteSchedule",
+        "scheduler:DeleteScheduleGroup",
+        "scheduler:ListScheduleGroups",
+        "scheduler:ListSchedules",
+        "scheduler:ListTagsForResource",
+        "ses:DeleteConfigurationSet",
+        "ses:DeleteIdentity",
+        "ses:DeleteReceiptFilter",
+        "ses:DeleteReceiptRuleSet",
+        "ses:DeleteTemplate",
+        "ses:DescribeActiveReceiptRuleSet",
+        "ses:ListConfigurationSets",
+        "ses:ListIdentities",
+        "ses:ListReceiptFilters",
+        "ses:ListReceiptRuleSets",
+        "ses:ListTemplates",
+        "sns:DeleteTopic",
+        "sns:ListTagsForResource",
+        "sns:ListTopics",
+        "sns:TagResource",
+        "sqs:DeleteQueue",
+        "sqs:GetQueueAttributes",
+        "sqs:ListQueueTags",
+        "sqs:ListQueues"
+      ],
+      "Resource": "*"
+    }
+  ],
+  "Version": "2012-10-17"
+}

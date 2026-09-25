@@ -1,0 +1,251 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/inter";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Design tokens: see docs/design-system.md. Ink (near-black) is the action
+   colour; blue survives only as the focus ring and chart hue; red is the one
+   accent, reserved for destructive actions. */
+:root {
+  --background: oklch(0.9581 0 0);
+  --foreground: oklch(0.3134 0.0234 253.627);
+  --card: oklch(0.9774 0.0042 236.4961);
+  --card-foreground: oklch(0.2022 0.011 151.1628);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.2505 0.0149 235.6259);
+  --primary: oklch(0.2022 0.011 151.1628);
+  --primary-foreground: oklch(0.9774 0.0042 236.4961);
+  --secondary: oklch(0.9122 0.0111 243.6627);
+  --secondary-foreground: oklch(0.4186 0.0133 235.133);
+  --muted: oklch(0.9209 0.0128 244.2626);
+  --muted-foreground: oklch(0.55 0.008 220);
+  --accent: oklch(0.9122 0.0111 243.6627);
+  --accent-foreground: oklch(0.2505 0.0149 235.6259);
+  --destructive: oklch(0.55 0.19 27);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.884 0.0067 208.7806);
+  --input: oklch(0.85 0.009 240);
+  --ring: oklch(0.6112 0.1217 248.9572);
+  --chart-1: oklch(0.5098 0.132 257.5458);
+  --chart-2: oklch(0.736 0.1191 266.5038);
+  --chart-3: oklch(0.8467 0.0177 248.0373);
+  --chart-4: oklch(0.8977 0.0274 260.3158);
+  --chart-5: oklch(0.4893 0.1504 261.9302);
+  --sidebar: oklch(0.959 0.0059 239.8204);
+  --sidebar-foreground: oklch(0.3571 0.0041 196.9738);
+  --sidebar-primary: oklch(0.2022 0.011 151.1628);
+  --sidebar-primary-foreground: oklch(0.9881 0 0);
+  --sidebar-accent: oklch(0.9122 0.0111 243.6627);
+  --sidebar-accent-foreground: oklch(0.325 0 0);
+  --sidebar-border: oklch(0.9401 0 0);
+  --sidebar-ring: oklch(0.7731 0 0);
+  /* semantic status colors (not part of the shadcn set) */
+  --ok: oklch(0.52 0.13 150);
+  --warn: oklch(0.6 0.13 70);
+  /* code block surface (always dark) */
+  --code: oklch(0.2338 0.0067 258);
+  --code-foreground: oklch(0.9 0.01 250);
+  --radius: 0.625rem;
+  --shadow-2xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.05);
+  --shadow-xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.05);
+  --shadow-sm: 0px 1px 2px 0px hsl(0 0% 0% / 0.05), 0px 2px 6px -2px hsl(0 0% 0% / 0.08);
+  --shadow: 0px 1px 2px 0px hsl(0 0% 0% / 0.05), 0px 2px 6px -2px hsl(0 0% 0% / 0.08);
+  --shadow-md: 0px 1px 2px 0px hsl(0 0% 0% / 0.05), 0px 8px 20px -8px hsl(220 20% 10% / 0.12);
+  --shadow-lg: 0px 1px 2px 0px hsl(0 0% 0% / 0.05), 0px 24px 60px -24px hsl(220 20% 10% / 0.22);
+  --shadow-xl: 0px 1px 2px 0px hsl(0 0% 0% / 0.05), 0px 32px 80px -24px hsl(220 20% 10% / 0.28);
+  --shadow-2xl: 0px 40px 100px -24px hsl(220 20% 10% / 0.35);
+  --tracking-normal: -0.011em;
+}
+
+.dark {
+  --background: oklch(0.1776 0 0);
+  --foreground: oklch(0.7905 0.0126 259.8241);
+  --card: oklch(0.2638 0.0024 247.9155);
+  --card-foreground: oklch(0.9755 0.0045 258.3245);
+  --popover: oklch(0.3046 0.0023 247.9001);
+  --popover-foreground: oklch(0.9176 0.0026 228.7865);
+  --primary: oklch(0.9755 0.0045 258.3245);
+  --primary-foreground: oklch(0.1776 0 0);
+  --secondary: oklch(0.9774 0.0042 236.4961);
+  --secondary-foreground: oklch(0.3046 0.0023 247.9001);
+  --muted: oklch(0.2171 0.0025 247.9411);
+  --muted-foreground: oklch(0.68 0.0125 239.9659);
+  --accent: oklch(0.2038 0.0067 258.3676);
+  --accent-foreground: oklch(0.959 0.0059 239.8204);
+  --destructive: oklch(0.6368 0.2078 25.3313);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.3306 0.0066 248.0169);
+  --input: oklch(0.39 0.008 248);
+  --ring: oklch(0.6576 0.1208 252.0832);
+  --chart-1: oklch(0.5098 0.132 257.5458);
+  --chart-2: oklch(0.736 0.1191 266.5038);
+  --chart-3: oklch(0.2038 0.0067 258.3676);
+  --chart-4: oklch(0.3361 0.0333 253.9085);
+  --chart-5: oklch(0.4893 0.1504 261.9302);
+  --sidebar: oklch(0.2344 0.0024 247.9303);
+  --sidebar-foreground: oklch(0.7905 0.0126 259.8241);
+  --sidebar-primary: oklch(0.9755 0.0045 258.3245);
+  --sidebar-primary-foreground: oklch(0.1776 0 0);
+  --sidebar-accent: oklch(0.1673 0.0016 196.9991);
+  --sidebar-accent-foreground: oklch(0.7905 0.0126 259.8241);
+  --sidebar-border: oklch(0.9401 0 0);
+  --sidebar-ring: oklch(0.7731 0 0);
+  --ok: oklch(0.75 0.14 150);
+  --warn: oklch(0.8 0.13 75);
+  --code: oklch(0.14 0.004 250);
+  --code-foreground: oklch(0.86 0.01 250);
+  --shadow-2xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.3);
+  --shadow-xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.3);
+  --shadow-sm: 0px 1px 2px 0px hsl(0 0% 0% / 0.3), 0px 2px 6px -2px hsl(0 0% 0% / 0.35);
+  --shadow: 0px 1px 2px 0px hsl(0 0% 0% / 0.3), 0px 2px 6px -2px hsl(0 0% 0% / 0.35);
+  --shadow-md: 0px 1px 2px 0px hsl(0 0% 0% / 0.3), 0px 8px 20px -8px hsl(0 0% 0% / 0.5);
+  --shadow-lg: 0px 1px 2px 0px hsl(0 0% 0% / 0.3), 0px 24px 60px -24px hsl(0 0% 0% / 0.7);
+  --shadow-xl: 0px 1px 2px 0px hsl(0 0% 0% / 0.3), 0px 32px 80px -24px hsl(0 0% 0% / 0.75);
+  --shadow-2xl: 0px 40px 100px -24px hsl(0 0% 0% / 0.8);
+}
+
+@theme inline {
+  --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", "PingFang SC", "Noto Sans SC", sans-serif;
+  --font-heading: var(--font-sans);
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-code: var(--code);
+  --color-code-foreground: var(--code-foreground);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+
+  --shadow-2xs: var(--shadow-2xs);
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow: var(--shadow);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+  --shadow-2xl: var(--shadow-2xl);
+
+  --tracking-tighter: calc(var(--tracking-normal) - 0.05em);
+  --tracking-tight: calc(var(--tracking-normal) - 0.025em);
+  --tracking-normal: var(--tracking-normal);
+  --tracking-wide: calc(var(--tracking-normal) + 0.025em);
+  --tracking-wider: calc(var(--tracking-normal) + 0.05em);
+  --tracking-widest: calc(var(--tracking-normal) + 0.1em);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    letter-spacing: var(--tracking-normal);
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  .maplibregl-popup-content {
+    @apply bg-transparent! shadow-none! p-0! rounded-none!;
+  }
+  .maplibregl-popup-tip {
+    @apply hidden!;
+  }
+  .maplibregl-ctrl-attrib {
+    @apply bg-background! text-muted-foreground! border-border! rounded-md! border! shadow-sm!;
+  }
+  .maplibregl-ctrl-attrib a {
+    @apply text-muted-foreground!;
+  }
+  .maplibregl-ctrl-attrib a:hover {
+    @apply text-foreground!;
+  }
+  .maplibregl-ctrl-attrib-button {
+    @apply bg-transparent! dark:invert;
+  }
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* striped, moving progress indicator used while a job is running */
+@utility progress-striped {
+  background-image: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.25) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.25) 50%,
+    rgba(255, 255, 255, 0.25) 75%,
+    transparent 75%
+  );
+  background-size: 16px 16px;
+  animation: broom-stripes 1s linear infinite;
+}
+@keyframes broom-stripes {
+  to {
+    background-position: 16px 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .progress-striped {
+    animation: none;
+  }
+}
+/* region map markers */
+@keyframes broom-ping {
+  0% { transform: scale(0.6); opacity: 0.45; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+@utility marker-ping {
+  animation: broom-ping 1.8s ease-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marker-ping { animation: none; opacity: 0.18; }
+}

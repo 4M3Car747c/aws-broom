@@ -1,0 +1,37 @@
+{
+  "Statement": [
+    {
+      "Sid": "BroomBase",
+      "Effect": "Allow",
+      "Action": [
+        "sts:GetCallerIdentity",
+        "ec2:DescribeRegions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BroomCleanEdgeDns",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:DeleteDistribution",
+        "cloudfront:GetDistributionConfig",
+        "cloudfront:ListTagsForResource",
+        "cloudfront:UpdateDistribution",
+        "route53:ChangeCidrCollection",
+        "route53:ChangeResourceRecordSets",
+        "route53:DeleteCidrCollection",
+        "route53:DeleteHostedZone",
+        "route53:DeleteTrafficPolicy",
+        "route53:DeleteTrafficPolicyInstance",
+        "route53:ListCidrBlocks",
+        "route53:ListCidrCollections",
+        "route53:ListHostedZones",
+        "route53:ListResourceRecordSets",
+        "route53:ListTagsForResources",
+        "route53:ListTrafficPolicies"
+      ],
+      "Resource": "*"
+    }
+  ],
+  "Version": "2012-10-17"
+}

@@ -1,0 +1,9 @@
+.git
+web/node_modules
+web/build
+web/.react-router
+internal/web/dist
+bin
+dist
+*.md
+!README.md

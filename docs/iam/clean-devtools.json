@@ -1,0 +1,49 @@
+{
+  "Statement": [
+    {
+      "Sid": "BroomBase",
+      "Effect": "Allow",
+      "Action": [
+        "sts:GetCallerIdentity",
+        "ec2:DescribeRegions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BroomCleanDevtools",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DeleteStack",
+        "cloudformation:DescribeStacks",
+        "cloudformation:ListStacks",
+        "codedeploy:BatchGetApplications",
+        "codedeploy:DeleteApplication",
+        "codedeploy:ListApplications",
+        "codedeploy:ListTagsForResource",
+        "datapipeline:DeletePipeline",
+        "datapipeline:DescribePipelines",
+        "datapipeline:ListPipelines",
+        "datasync:DeleteLocation",
+        "datasync:DeleteTask",
+        "datasync:ListLocations",
+        "datasync:ListTagsForResource",
+        "datasync:ListTasks",
+        "ram:DeleteResourceShare",
+        "ram:GetResourceShares",
+        "servicediscovery:DeleteNamespace",
+        "servicediscovery:DeleteService",
+        "servicediscovery:DeregisterInstance",
+        "servicediscovery:GetNamespace",
+        "servicediscovery:ListInstances",
+        "servicediscovery:ListNamespaces",
+        "servicediscovery:ListServices",
+        "servicediscovery:ListTagsForResource",
+        "ssm:DeleteParameter",
+        "ssm:DescribeParameters",
+        "ssm:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ],
+  "Version": "2012-10-17"
+}

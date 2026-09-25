@@ -1,0 +1,44 @@
+{
+  "Statement": [
+    {
+      "Sid": "BroomBase",
+      "Effect": "Allow",
+      "Action": [
+        "sts:GetCallerIdentity",
+        "ec2:DescribeRegions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BroomCleanMonitoring",
+      "Effect": "Allow",
+      "Action": [
+        "aps:DeleteWorkspace",
+        "aps:ListWorkspaces",
+        "cloudtrail:DeleteTrail",
+        "cloudtrail:ListTags",
+        "cloudtrail:ListTrails",
+        "cloudwatch:DeleteAlarms",
+        "cloudwatch:DeleteDashboards",
+        "cloudwatch:DescribeAlarms",
+        "cloudwatch:ListDashboards",
+        "cloudwatch:ListTagsForResource",
+        "cloudwatch:PutCompositeAlarm",
+        "config:DeleteConfigRule",
+        "config:DeleteConfigurationRecorder",
+        "config:DeleteRemediationConfiguration",
+        "config:DescribeConfigRules",
+        "config:DescribeConfigurationRecorders",
+        "config:DescribeRemediationConfigurations",
+        "config:ListTagsForResource",
+        "grafana:DeleteWorkspace",
+        "grafana:ListWorkspaces",
+        "logs:DeleteLogGroup",
+        "logs:DescribeLogGroups",
+        "logs:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ],
+  "Version": "2012-10-17"
+}

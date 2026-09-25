@@ -1,0 +1,59 @@
+{
+  "Statement": [
+    {
+      "Sid": "BroomBase",
+      "Effect": "Allow",
+      "Action": [
+        "sts:GetCallerIdentity",
+        "ec2:DescribeRegions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BroomCleanSecurity",
+      "Effect": "Allow",
+      "Action": [
+        "access-analyzer:DeleteAnalyzer",
+        "access-analyzer:ListAnalyzers",
+        "acm-pca:DeleteCertificateAuthority",
+        "acm-pca:DescribeCertificateAuthority",
+        "acm-pca:ListCertificateAuthorities",
+        "acm-pca:ListTags",
+        "acm-pca:UpdateCertificateAuthority",
+        "acm:DeleteCertificate",
+        "acm:ListCertificates",
+        "acm:ListTagsForCertificate",
+        "guardduty:DeleteDetector",
+        "guardduty:GetDetector",
+        "guardduty:ListDetectors",
+        "kms:DescribeKey",
+        "kms:ListAliases",
+        "kms:ListKeys",
+        "kms:ListResourceTags",
+        "kms:ScheduleKeyDeletion",
+        "macie2:DeleteMember",
+        "macie2:DisableMacie",
+        "macie2:DisassociateFromAdministratorAccount",
+        "macie2:DisassociateMember",
+        "macie2:GetAdministratorAccount",
+        "macie2:GetMacieSession",
+        "macie2:ListMembers",
+        "macie2:ListTagsForResource",
+        "secretsmanager:DeleteSecret",
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:ListSecrets",
+        "secretsmanager:RemoveRegionsFromReplication",
+        "securityhub:DeleteMembers",
+        "securityhub:DescribeHub",
+        "securityhub:DisableSecurityHub",
+        "securityhub:DisassociateFromAdministratorAccount",
+        "securityhub:DisassociateMembers",
+        "securityhub:GetAdministratorAccount",
+        "securityhub:ListMembers",
+        "securityhub:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ],
+  "Version": "2012-10-17"
+}

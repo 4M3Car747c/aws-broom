@@ -1,0 +1,489 @@
+{
+  "app": {
+    "name": "AWS Broom",
+    "nav": {
+      "wizard": "清理向导",
+      "history": "历史"
+    },
+    "signOut": "退出",
+    "switchLanguage": "切换语言",
+    "switchTheme": "切换主题",
+    "temporary": "临时凭证",
+    "longLived": "长期密钥",
+    "minutesLeft": "剩余 {{n}} 分钟",
+    "footer": {
+      "poweredBy": "基于 cloud-nuke",
+      "source": "源码",
+      "iamPolicy": "IAM 策略",
+      "security": "安全说明"
+    },
+    "menu": {
+      "theme": "主题",
+      "language": "语言",
+      "settings": "设置",
+      "signOut": "退出",
+      "notConnected": "未连接",
+      "noCredentials": "尚未提供凭证",
+      "light": "亮色",
+      "dark": "暗色",
+      "system": "跟随系统"
+    }
+  },
+  "common": {
+    "back": "返回",
+    "next": "下一步",
+    "cancel": "取消",
+    "selectAll": "全选",
+    "clear": "清空",
+    "loading": "加载中…",
+    "retry": "重试",
+    "regions": "区域",
+    "services": "服务",
+    "resourceTypes": "资源类型",
+    "account": "账号",
+    "type": "类型",
+    "region": "区域",
+    "identifier": "标识",
+    "status": "状态",
+    "result": "结果",
+    "global": "全局",
+    "selection": "当前选择",
+    "off": "关",
+    "on": "开",
+    "sessionExpired": "会话已过期，请重新连接。",
+    "unknownError": "出了点问题",
+    "expand": "展开",
+    "plusGlobal": "+ 全局"
+  },
+  "risk": {
+    "low": "低风险",
+    "medium": "中风险",
+    "high": "高风险"
+  },
+  "steps": {
+    "regions": "区域",
+    "services": "服务",
+    "scan": "扫描",
+    "review": "复核",
+    "clean": "清理"
+  },
+  "home": {
+    "form": {
+      "title": "连接 AWS 账号",
+      "desc": "粘贴临时凭证。我们会用 sts:GetCallerIdentity 校验，并先把账号信息展示给你。",
+      "accessKey": "Access Key ID",
+      "secretKey": "Secret Access Key",
+      "sessionToken": "Session Token",
+      "optional": "（可选，推荐）",
+      "ack": "我理解此工具会永久删除所连接账号中的资源，并对我确认的操作负责。",
+      "submit": "验证并进入",
+      "submitting": "正在向 AWS 校验…",
+      "cliHint": "用 AWS CLI 生成 1 小时有效的临时凭证：",
+      "policyLink": "最小 IAM 权限策略 →",
+      "continueAs": "以 {{account}} 继续",
+      "signedInAs": "当前已连接",
+      "useAnother": "换一个账号",
+      "errors": {
+        "required": "请填写 Access Key 和 Secret。",
+        "ack": "请先勾选确认声明。"
+      }
+    }
+  },
+  "regions": {
+    "title": "要扫描哪些区域？",
+    "sub": "点击地图上的位置即可选择。仅可选择账号 {{account}} 已启用的区域；全局服务（S3、IAM、CloudFront、Route 53）在下一步单独处理。",
+    "next": "下一步：选择服务",
+    "loadError": "无法获取区域列表",
+    "selectAllEnabled": "全选已启用",
+    "unmapped": "其他已启用区域",
+    "optInNote": "红色点位是本账号尚未开通的 opt-in 区域。如需扫描，请先在 AWS 控制台开通。",
+    "notEnabled": "未启用",
+    "zoomIn": "放大",
+    "zoomOut": "缩小",
+    "resetView": "复位",
+    "legend": {
+      "selected": "已选",
+      "enabled": "可选",
+      "notEnabled": "未启用（需开通）"
+    }
+  },
+  "services": {
+    "title": "要清理哪些服务？",
+    "sub": "每个服务可展开为 cloud-nuke 实际扫描的资源类型。高风险服务默认关闭。",
+    "commonSet": "常用集",
+    "everything": "全部",
+    "typesCount": "{{n}} 种资源类型",
+    "selectedOf": "已选 {{sel}} / {{n}}",
+    "olderThan": {
+      "prefix": "仅清理创建时间早于",
+      "suffix": "小时的资源",
+      "hint": "按资源创建时间过滤。没有创建时间的资源（VPC、安全组、EIP 等）会在扫描时被写入 cloud-nuke-first-seen 标签，并在本次跳过。"
+    },
+    "readOnlyNote": "扫描是只读的；唯一例外是 EC2 家族会用 DryRun 调用校验你是否有删除权限。",
+    "kmsNote": "KMS 密钥会进入 7 天待删除期，之后不可恢复。",
+    "iamNote": "当前登录用户（{{user}}）始终排除。",
+    "start": "开始扫描",
+    "timeFilter": "时间过滤",
+    "showTypes": "展开类型",
+    "hideTypes": "收起类型",
+    "none": "请至少选择一种资源类型。"
+  },
+  "scan": {
+    "titleRunning": "正在扫描 {{account}}…",
+    "titleDone": "扫描完成",
+    "titleFailed": "扫描失败",
+    "titleCancelled": "扫描已取消",
+    "sub": "{{types}} 种资源类型 × {{regions}}。此步骤不会删除任何东西。",
+    "cancel": "取消扫描",
+    "tiles": {
+      "progress": "进度",
+      "found": "发现资源",
+      "protected": "不可删除",
+      "errors": "扫描错误"
+    },
+    "foundSoFar": "已发现",
+    "live": "实时 · 最新在前",
+    "byRegion": "按区域",
+    "errors": "错误",
+    "noErrors": "没有错误",
+    "protected": "受保护",
+    "review": "查看结果",
+    "nothingFound": "没有发现资源",
+    "nothingFoundBody": "所选区域和服务中没有匹配的资源。",
+    "changeSelection": "修改选择",
+    "logs": "Worker 日志"
+  },
+  "review": {
+    "title": "核对将被删除的资源",
+    "sub": "下面勾选的每一项都会从账号 {{account}} 永久删除。想保留的请取消勾选。",
+    "rescan": "重新扫描",
+    "tiles": {
+      "regions": "区域",
+      "services": "服务",
+      "found": "发现资源",
+      "protected": "无法删除"
+    },
+    "search": "搜索标识…",
+    "allRegions": "全部区域",
+    "selectDeletable": "全选可删除",
+    "willDelete": "将删除",
+    "keep": "保留",
+    "emptyThenDelete": "清空后删除",
+    "deleteN": "删除 {{n}} 项资源…",
+    "dialog": {
+      "eyebrow": "此操作不可撤销",
+      "title": "从 {{account}} 删除 {{n}} 项资源？",
+      "body": "删除前会先重新扫描一次；只删除你确认的 {{n}} 个标识，新出现的资源不会被动。",
+      "regions": "区域",
+      "services": "服务",
+      "global": "全局 (S3/IAM)",
+      "typeAccount": "输入账号 ID 以确认",
+      "confirm": "删除 {{n}} 项资源"
+    },
+    "noMatches": "没有符合筛选条件的资源。",
+    "filterByRegion": "按区域筛选"
+  },
+  "clean": {
+    "titleRunning": "正在删除 {{n}} 项资源…",
+    "titleDone": "清理完成",
+    "titleFailed": "清理因错误停止",
+    "titleCancelled": "清理已停止",
+    "sub": "各区域并行执行；全局服务（S3、IAM）最后处理，等依赖它们的资源全部清除后再删。",
+    "stop": "停止",
+    "phase": {
+      "rescan": "正在重新扫描以确认资源仍然存在…",
+      "nuke": "正在删除…"
+    },
+    "tiles": {
+      "deleted": "已删除",
+      "retry": "稍后重试",
+      "failed": "失败",
+      "remaining": "剩余"
+    },
+    "status": {
+      "deleted": "已删除",
+      "gone": "已不存在",
+      "retry": "约 30 分钟后重试",
+      "pending": "等待中…"
+    },
+    "byRegion": "按区域",
+    "whenDone": "完成后",
+    "whenDoneBody": "标记为“稍后重试”的通常是 VPC 依赖，AWS 会在子资源删除几分钟后才释放。可用“再次扫描”把它们收尾。",
+    "scanAgain": "再次扫描",
+    "export": "导出报告（JSON）",
+    "done": "完成"
+  },
+  "history": {
+    "title": "历史记录",
+    "sub": "仅保存在当前浏览器（IndexedDB），服务端不保留任何记录。",
+    "clear": "清空历史",
+    "empty": "还没有记录",
+    "emptyBody": "在此浏览器中运行的扫描和清理会显示在这里。",
+    "kind": {
+      "scan": "扫描",
+      "nuke": "清理"
+    },
+    "stats": {
+      "found": "发现",
+      "protected": "受保护",
+      "types": "类型",
+      "deleted": "已删除",
+      "retry": "待重试",
+      "failed": "失败",
+      "duration": "耗时"
+    },
+    "view": "查看",
+    "export": "导出",
+    "delete": "删除",
+    "state": {
+      "succeeded": "已完成",
+      "failed": "失败",
+      "cancelled": "已取消",
+      "running": "运行中",
+      "queued": "排队中"
+    },
+    "actions": "操作",
+    "durMin": "{{m}} 分 {{s}} 秒",
+    "durSec": "{{s}} 秒"
+  },
+  "job": {
+    "state": {
+      "queued": "排队中",
+      "running": "运行中",
+      "succeeded": "已完成",
+      "failed": "失败",
+      "cancelled": "已取消"
+    },
+    "notFound": "该任务已不可用。任务只在内存中保留有限时间。",
+    "cancelled": "已取消"
+  },
+  "settings": {
+    "title": "设置",
+    "close": "关闭",
+    "copy": "复制",
+    "copied": "已复制",
+    "tabs": {
+      "credentials": "凭证",
+      "appearance": "外观",
+      "language": "语言",
+      "about": "关于"
+    },
+    "credentials": {
+      "account": "账号",
+      "identity": "身份",
+      "validity": "有效期",
+      "notConnectedBody": "回到向导第一步，粘贴临时凭证。",
+      "connect": "连接凭证"
+    },
+    "about": {
+      "blurb": "免费、开源，在 PoC 结束后清空 AWS 账号。",
+      "version": "版本",
+      "engine": "引擎",
+      "license": "许可",
+      "source": "源码",
+      "iamPolicy": "IAM 策略",
+      "security": "安全说明"
+    }
+  },
+  "connect": {
+    "title": "连接 AWS 账号"
+  },
+  "landing": {
+    "h1": "一把扫帚,把 PoC 留下的账号扫空",
+    "lead": "不必在十几个控制台里翻找残留。选好区域和服务,扫描、核对、确认,剩下的交给扫帚。不注册、不存数据,用完即走。",
+    "src": "查看源码",
+    "fine": "推荐使用 1 小时有效的 STS 临时凭证",
+    "f": {
+      "h": "每一步都可见,每一条都可撤回勾选",
+      "p": "删除不可逆,所以工具的每个环节都围绕\"你看过、你确认过\"来设计。"
+    },
+    "c1": {
+      "t": "按资源 ID 核对",
+      "s": "Review · 逐条勾选",
+      "a": "已勾选",
+      "b": "受保护"
+    },
+    "c2": {
+      "t": "凭证只在内存",
+      "s": "Session · 不落盘",
+      "a": "空闲清零",
+      "b": "最长会话"
+    },
+    "c3": {
+      "t": "清理前再扫一次",
+      "s": "Rescan · 只删交集",
+      "a": "新增资源",
+      "b": "已消失",
+      "aUnit": "删",
+      "bVal": "标记"
+    },
+    "c4": {
+      "t": "高风险默认关闭",
+      "s": "Risk · 需主动开启",
+      "a": "高风险组",
+      "b": "默认",
+      "groups": "3 组",
+      "off": "关"
+    },
+    "c5": {
+      "t": "逐条实时回报",
+      "s": "Progress · 区域并行",
+      "a": "已删除",
+      "b": "警告"
+    },
+    "tr": {
+      "h": "先看清楚要删什么,再动手",
+      "p": "前四步不会对账号做任何改动。",
+      "1": "勾选要清理的区域,全局服务单独列出。",
+      "2": "按分组勾选资源类型,高风险项默认关闭。",
+      "3": "只读扫描,逐条列出账号里的资源。",
+      "4": "按资源 ID 核对、勾选或排除。",
+      "5": "输入账号 ID 二次确认,实时回报结果。"
+    },
+    "st": {
+      "1": "区域",
+      "2": "服务",
+      "3": "扫描",
+      "5": "清理",
+      "4": "复核"
+    },
+    "rg": {
+      "cur": "当前选择",
+      "acc": "账号",
+      "n": "区域",
+      "hint": "点击地图上的位置即可选择;全局服务在下一步单独处理。"
+    },
+    "lg": {
+      "sel": "已选",
+      "on": "可选",
+      "opt": "未启用"
+    },
+    "sv": {
+      "types": "{{n}} 种资源类型",
+      "ct": "容器",
+      "sl": "无服务器",
+      "db": "数据库",
+      "st": "存储",
+      "sec": "安全与密钥",
+      "sum": "已选 6 / 8 组 · 78 种资源类型",
+      "go": "开始扫描"
+    },
+    "r": {
+      "lo": "低风险",
+      "md": "中风险",
+      "hi": "高风险",
+      "ok": "已删除",
+      "gone": "已不存在"
+    },
+    "sc": {
+      "prog": "进度",
+      "found": "发现资源",
+      "nodel": "不可删除",
+      "err": "扫描错误",
+      "byreg": "按区域"
+    },
+    "th": {
+      "ty": "类型",
+      "reg": "区域",
+      "id": "标识",
+      "st": "状态",
+      "res": "结果"
+    },
+    "rv": {
+      "reg": "区域",
+      "svc": "服务",
+      "found": "发现资源",
+      "nodel": "无法删除",
+      "will": "将删除",
+      "prot": "终止保护已开启",
+      "sel": "已选",
+      "kept": "受保护",
+      "go": "删除 182 项资源…"
+    },
+    "cl": {
+      "done": "已删除",
+      "retry": "稍后重试",
+      "fail": "失败",
+      "left": "剩余",
+      "wait": "等待中…"
+    },
+    "se": {
+      "h": "密钥只在内存里,而且只活一小会儿",
+      "p": "从粘贴到清零的完整路径。不写数据库、不写磁盘、不写日志。"
+    },
+    "cf": {
+      "1": "浏览器",
+      "1s": "粘贴 1 小时有效的临时凭证",
+      "a1": "HTTPS\n一次提交",
+      "2": "服务内存",
+      "2s": "校验后只存在这里",
+      "s1": "任一发生即清零",
+      "s1a": "退出登录",
+      "s1b": "空闲 60 min",
+      "s1c": "满 12 h",
+      "s1d": "服务重启",
+      "a2": "环境变量",
+      "3": "worker 子进程",
+      "3s": "每次扫描 / 清理一个",
+      "s2": "与宿主机隔离",
+      "s2a": "读不到 ~/.aws",
+      "s2b": "IMDS 禁用",
+      "s2c": "无遥测",
+      "a3": "仅所选区域\n与服务",
+      "4s": "任务结束,进程退出"
+    },
+    "cta": {
+      "h": "托管实例直接用,或者一条命令跑在自己机器上",
+      "p": "单个 Go 二进制、单个容器、没有数据库。镜像基于 distroless,非 root 运行,不采集遥测。",
+      "a": "连接 AWS 账号",
+      "b": "阅读安全说明"
+    },
+    "copy": "复制",
+    "code": {
+      "c": "# HTTPS 交给 Traefik / Caddy"
+    },
+    "ft": {
+      "p": "免费、开源的 AWS 账号清理工具。删除由 Gruntwork 的 cloud-nuke 执行。请只用于沙箱与 PoC 账号。",
+      "h1": "项目",
+      "src": "源码",
+      "h2": "文档",
+      "iam": "IAM 策略",
+      "sec": "安全说明",
+      "host": "自托管",
+      "releases": "发行版",
+      "legal": "© 2026 AWS Broom · MIT 许可证"
+    },
+    "fineLink": "最小 IAM 权限策略",
+    "copied": "已复制",
+    "connect": "连接 AWS 账号",
+    "aria": {
+      "steps": "步骤",
+      "preview": "应用预览",
+      "services": "支持的服务",
+      "credFlow": "凭证流转"
+    },
+    "shotAlt": "AWS Broom 的复核步骤",
+    "venn": {
+      "rescan": "重扫",
+      "confirmed": "已确认"
+    },
+    "high": "高危"
+  },
+  "terminal": {
+    "filter": "过滤…",
+    "wrap": "自动换行",
+    "follow": "跟随末尾",
+    "copy": "复制",
+    "copied": "已复制",
+    "close": "关闭",
+    "lines": "{{n}} 行",
+    "empty": "没有匹配的内容"
+  },
+  "error": {
+    "title": "出了点问题",
+    "body": "发生了意外错误。",
+    "notFoundTitle": "404",
+    "notFoundBody": "找不到你要的页面。",
+    "home": "回到首页"
+  }
+}

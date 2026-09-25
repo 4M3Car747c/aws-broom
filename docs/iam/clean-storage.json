@@ -1,0 +1,52 @@
+{
+  "Statement": [
+    {
+      "Sid": "BroomBase",
+      "Effect": "Allow",
+      "Action": [
+        "sts:GetCallerIdentity",
+        "ec2:DescribeRegions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BroomCleanStorage",
+      "Effect": "Allow",
+      "Action": [
+        "backup:DeleteBackupPlan",
+        "backup:DeleteBackupSelection",
+        "backup:DeleteBackupVault",
+        "backup:DeleteRecoveryPoint",
+        "backup:ListBackupPlans",
+        "backup:ListBackupSelections",
+        "backup:ListBackupVaults",
+        "backup:ListRecoveryPointsByBackupVault",
+        "backup:ListTags",
+        "elasticfilesystem:DeleteAccessPoint",
+        "elasticfilesystem:DeleteFileSystem",
+        "elasticfilesystem:DeleteMountTarget",
+        "elasticfilesystem:DescribeAccessPoints",
+        "elasticfilesystem:DescribeFileSystems",
+        "elasticfilesystem:DescribeMountTargets",
+        "s3:DeleteAccessPoint",
+        "s3:DeleteAccessPointForObjectLambda",
+        "s3:DeleteBucket",
+        "s3:DeleteBucketPolicy",
+        "s3:DeleteMultiRegionAccessPoint",
+        "s3:DeleteObject",
+        "s3:DeleteObjectVersion",
+        "s3:GetBucketLocation",
+        "s3:GetBucketTagging",
+        "s3:ListAccessPoints",
+        "s3:ListAccessPointsForObjectLambda",
+        "s3:ListAllMyBuckets",
+        "s3:ListBucket",
+        "s3:ListBucketVersions",
+        "s3:ListMultiRegionAccessPoints",
+        "s3:PutLifecycleConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ],
+  "Version": "2012-10-17"
+}

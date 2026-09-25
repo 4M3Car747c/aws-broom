@@ -1,0 +1,43 @@
+{
+  "Statement": [
+    {
+      "Sid": "BroomBase",
+      "Effect": "Allow",
+      "Action": [
+        "sts:GetCallerIdentity",
+        "ec2:DescribeRegions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BroomCleanMl",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DeleteApp",
+        "sagemaker:DeleteDomain",
+        "sagemaker:DeleteEndpoint",
+        "sagemaker:DeleteEndpointConfig",
+        "sagemaker:DeleteInferenceComponent",
+        "sagemaker:DeleteMlflowTrackingServer",
+        "sagemaker:DeleteNotebookInstance",
+        "sagemaker:DeleteSpace",
+        "sagemaker:DeleteUserProfile",
+        "sagemaker:DescribeDomain",
+        "sagemaker:DescribeNotebookInstance",
+        "sagemaker:ListApps",
+        "sagemaker:ListDomains",
+        "sagemaker:ListEndpointConfigs",
+        "sagemaker:ListEndpoints",
+        "sagemaker:ListInferenceComponents",
+        "sagemaker:ListMlflowTrackingServers",
+        "sagemaker:ListNotebookInstances",
+        "sagemaker:ListSpaces",
+        "sagemaker:ListTags",
+        "sagemaker:ListUserProfiles",
+        "sagemaker:StopNotebookInstance"
+      ],
+      "Resource": "*"
+    }
+  ],
+  "Version": "2012-10-17"
+}

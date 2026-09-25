@@ -1,0 +1,66 @@
+{
+  "Statement": [
+    {
+      "Sid": "BroomBase",
+      "Effect": "Allow",
+      "Action": [
+        "sts:GetCallerIdentity",
+        "ec2:DescribeRegions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BroomCleanDatabases",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:DeleteTable",
+        "dynamodb:DescribeTable",
+        "dynamodb:ListTables",
+        "dynamodb:ListTagsOfResource",
+        "dynamodb:UpdateTable",
+        "elasticache:DeleteCacheCluster",
+        "elasticache:DeleteCacheParameterGroup",
+        "elasticache:DeleteCacheSubnetGroup",
+        "elasticache:DeleteReplicationGroup",
+        "elasticache:DeleteServerlessCache",
+        "elasticache:DescribeCacheClusters",
+        "elasticache:DescribeCacheParameterGroups",
+        "elasticache:DescribeCacheSubnetGroups",
+        "elasticache:DescribeReplicationGroups",
+        "elasticache:DescribeServerlessCaches",
+        "elasticache:ListTagsForResource",
+        "es:AddTags",
+        "es:DeleteDomain",
+        "es:DescribeDomains",
+        "es:ListDomainNames",
+        "es:ListTags",
+        "rds:DeleteDBCluster",
+        "rds:DeleteDBClusterSnapshot",
+        "rds:DeleteDBInstance",
+        "rds:DeleteDBParameterGroup",
+        "rds:DeleteDBProxy",
+        "rds:DeleteDBSnapshot",
+        "rds:DeleteDBSubnetGroup",
+        "rds:DeleteGlobalCluster",
+        "rds:DescribeDBClusterSnapshots",
+        "rds:DescribeDBClusters",
+        "rds:DescribeDBInstances",
+        "rds:DescribeDBParameterGroups",
+        "rds:DescribeDBProxies",
+        "rds:DescribeDBSnapshots",
+        "rds:DescribeDBSubnetGroups",
+        "rds:DescribeGlobalClusters",
+        "rds:ListTagsForResource",
+        "rds:ModifyDBCluster",
+        "rds:ModifyDBInstance",
+        "rds:RemoveFromGlobalCluster",
+        "redshift:DeleteCluster",
+        "redshift:DeleteSnapshotCopyGrant",
+        "redshift:DescribeClusters",
+        "redshift:DescribeSnapshotCopyGrants"
+      ],
+      "Resource": "*"
+    }
+  ],
+  "Version": "2012-10-17"
+}

@@ -1,0 +1,49 @@
+{
+  "Statement": [
+    {
+      "Sid": "BroomBase",
+      "Effect": "Allow",
+      "Action": [
+        "sts:GetCallerIdentity",
+        "ec2:DescribeRegions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BroomCleanContainers",
+      "Effect": "Allow",
+      "Action": [
+        "apprunner:DeleteService",
+        "apprunner:ListServices",
+        "apprunner:ListTagsForResource",
+        "ecr:DeleteRepository",
+        "ecr:DescribeRepositories",
+        "ecr:ListTagsForResource",
+        "ecs:DeleteCluster",
+        "ecs:DeleteService",
+        "ecs:DeregisterContainerInstance",
+        "ecs:DescribeClusters",
+        "ecs:DescribeServices",
+        "ecs:ListClusters",
+        "ecs:ListContainerInstances",
+        "ecs:ListServices",
+        "ecs:ListTagsForResource",
+        "ecs:ListTasks",
+        "ecs:StopTask",
+        "ecs:TagResource",
+        "ecs:UpdateService",
+        "eks:DeleteCluster",
+        "eks:DeleteFargateProfile",
+        "eks:DeleteNodegroup",
+        "eks:DescribeCluster",
+        "eks:DescribeFargateProfile",
+        "eks:DescribeNodegroup",
+        "eks:ListClusters",
+        "eks:ListFargateProfiles",
+        "eks:ListNodegroups"
+      ],
+      "Resource": "*"
+    }
+  ],
+  "Version": "2012-10-17"
+}

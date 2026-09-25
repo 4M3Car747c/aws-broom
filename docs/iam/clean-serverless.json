@@ -1,0 +1,29 @@
+{
+  "Statement": [
+    {
+      "Sid": "BroomBase",
+      "Effect": "Allow",
+      "Action": [
+        "sts:GetCallerIdentity",
+        "ec2:DescribeRegions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BroomCleanServerless",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:DELETE",
+        "apigateway:GET",
+        "lambda:DeleteFunction",
+        "lambda:DeleteLayerVersion",
+        "lambda:ListFunctions",
+        "lambda:ListLayerVersions",
+        "lambda:ListLayers",
+        "lambda:ListTags"
+      ],
+      "Resource": "*"
+    }
+  ],
+  "Version": "2012-10-17"
+}

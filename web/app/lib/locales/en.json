@@ -1,0 +1,489 @@
+{
+  "app": {
+    "name": "AWS Broom",
+    "nav": {
+      "wizard": "Clean up",
+      "history": "History"
+    },
+    "signOut": "Sign out",
+    "switchLanguage": "Switch language",
+    "switchTheme": "Switch theme",
+    "temporary": "Temporary",
+    "longLived": "Long-lived key",
+    "minutesLeft": "{{n}} min left",
+    "footer": {
+      "poweredBy": "Powered by cloud-nuke",
+      "source": "Source",
+      "iamPolicy": "IAM policy",
+      "security": "Security notes"
+    },
+    "menu": {
+      "theme": "Theme",
+      "language": "Language",
+      "settings": "Settings",
+      "signOut": "Sign out",
+      "notConnected": "Not connected",
+      "noCredentials": "No credentials yet",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
+  },
+  "common": {
+    "back": "Back",
+    "next": "Next",
+    "cancel": "Cancel",
+    "selectAll": "Select all",
+    "clear": "Clear",
+    "loading": "Loading…",
+    "retry": "Retry",
+    "regions": "Regions",
+    "services": "Services",
+    "resourceTypes": "Resource types",
+    "account": "Account",
+    "type": "Type",
+    "region": "Region",
+    "identifier": "Identifier",
+    "status": "Status",
+    "result": "Result",
+    "global": "global",
+    "selection": "Selection",
+    "off": "off",
+    "on": "on",
+    "sessionExpired": "Your session expired. Please connect again.",
+    "unknownError": "Something went wrong",
+    "expand": "Expand",
+    "plusGlobal": "+ global"
+  },
+  "risk": {
+    "low": "Low risk",
+    "medium": "Medium",
+    "high": "High risk"
+  },
+  "steps": {
+    "regions": "Regions",
+    "services": "Services",
+    "scan": "Scan",
+    "review": "Review",
+    "clean": "Clean"
+  },
+  "home": {
+    "form": {
+      "title": "Connect an AWS account",
+      "desc": "Paste temporary credentials. We check them with sts:GetCallerIdentity and show you the account before anything else happens.",
+      "accessKey": "Access Key ID",
+      "secretKey": "Secret Access Key",
+      "sessionToken": "Session Token",
+      "optional": "(optional, recommended)",
+      "ack": "I understand this tool permanently deletes resources in the account I connect, and that I am responsible for what I confirm.",
+      "submit": "Verify and continue",
+      "submitting": "Checking with AWS…",
+      "cliHint": "Get a 1-hour temporary credential with the AWS CLI:",
+      "policyLink": "Minimum IAM policy →",
+      "continueAs": "Continue as {{account}}",
+      "signedInAs": "Signed in as",
+      "useAnother": "Use another account",
+      "errors": {
+        "required": "Access key and secret are required.",
+        "ack": "Please acknowledge the warning first."
+      }
+    }
+  },
+  "regions": {
+    "title": "Which regions should be scanned?",
+    "sub": "Click a location on the map to select it. Only regions enabled for account {{account}} can be selected; global services (S3, IAM, CloudFront, Route 53) are handled in the next step.",
+    "next": "Next: services",
+    "loadError": "Could not list regions",
+    "selectAllEnabled": "Select all enabled",
+    "unmapped": "Other enabled regions",
+    "optInNote": "Regions shown in red are opt-in regions this account has not activated. Enable them in the AWS console first if you need them scanned.",
+    "notEnabled": "not enabled",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "resetView": "Reset view",
+    "legend": {
+      "selected": "Selected",
+      "enabled": "Enabled",
+      "notEnabled": "Not enabled (opt-in)"
+    }
+  },
+  "services": {
+    "title": "Which services should be cleaned?",
+    "sub": "Each service expands into the exact resource types cloud-nuke will look for. High-risk services are off by default.",
+    "commonSet": "Common set",
+    "everything": "Everything",
+    "typesCount": "{{n}} resource types",
+    "selectedOf": "{{sel}} of {{n}} selected",
+    "olderThan": {
+      "prefix": "Only resources created more than",
+      "suffix": "hours ago",
+      "hint": "Uses each resource's creation time. Resources without one (VPCs, security groups, EIPs…) get a cloud-nuke-first-seen tag written during the scan and are skipped this time."
+    },
+    "readOnlyNote": "Scanning is read-only, except that EC2-family checks use DryRun calls to verify you have delete permission.",
+    "kmsNote": "KMS keys are scheduled for deletion after 7 days and cannot be recovered afterwards.",
+    "iamNote": "The user you signed in with ({{user}}) is always excluded.",
+    "start": "Start scan",
+    "timeFilter": "Time filter",
+    "showTypes": "Show types",
+    "hideTypes": "Hide types",
+    "none": "Select at least one resource type."
+  },
+  "scan": {
+    "titleRunning": "Scanning {{account}}…",
+    "titleDone": "Scan finished",
+    "titleFailed": "Scan failed",
+    "titleCancelled": "Scan cancelled",
+    "sub": "{{types}} resource types across {{regions}}. Nothing is deleted at this step.",
+    "cancel": "Cancel scan",
+    "tiles": {
+      "progress": "Progress",
+      "found": "Resources found",
+      "protected": "Not deletable",
+      "errors": "Scan errors"
+    },
+    "foundSoFar": "Found so far",
+    "live": "live · newest first",
+    "byRegion": "By region",
+    "errors": "Errors",
+    "noErrors": "No errors",
+    "protected": "protected",
+    "review": "Review results",
+    "nothingFound": "Nothing found",
+    "nothingFoundBody": "No resources matched in the selected regions and services.",
+    "changeSelection": "Change selection",
+    "logs": "Worker log"
+  },
+  "review": {
+    "title": "Review what will be deleted",
+    "sub": "Everything checked below will be permanently deleted from account {{account}}. Uncheck anything you want to keep.",
+    "rescan": "Rescan",
+    "tiles": {
+      "regions": "Regions",
+      "services": "Services",
+      "found": "Resources found",
+      "protected": "Cannot be deleted"
+    },
+    "search": "Search identifier…",
+    "allRegions": "All regions",
+    "selectDeletable": "Select all deletable",
+    "willDelete": "Will delete",
+    "keep": "Keep",
+    "emptyThenDelete": "Empty, then delete",
+    "deleteN": "Delete {{n}} resources…",
+    "dialog": {
+      "eyebrow": "This cannot be undone",
+      "title": "Delete {{n}} resources from {{account}}?",
+      "body": "The account will be rescanned first; only the {{n}} identifiers you confirmed are deleted. Anything new is left alone.",
+      "regions": "Regions",
+      "services": "Services",
+      "global": "Global (S3/IAM)",
+      "typeAccount": "Type the account ID to confirm",
+      "confirm": "Delete {{n}} resources"
+    },
+    "noMatches": "No resources match this filter.",
+    "filterByRegion": "Filter by region"
+  },
+  "clean": {
+    "titleRunning": "Deleting {{n}} resources…",
+    "titleDone": "Clean-up finished",
+    "titleFailed": "Clean-up stopped with an error",
+    "titleCancelled": "Clean-up stopped",
+    "sub": "Regions run in parallel; global services (S3, IAM) go last, after everything that depends on them is gone.",
+    "stop": "Stop",
+    "phase": {
+      "rescan": "Rescanning to confirm what still exists…",
+      "nuke": "Deleting…"
+    },
+    "tiles": {
+      "deleted": "Deleted",
+      "retry": "Retry later",
+      "failed": "Failed",
+      "remaining": "Remaining"
+    },
+    "status": {
+      "deleted": "Deleted",
+      "gone": "Already gone",
+      "retry": "retry in ~30 min",
+      "pending": "Waiting…"
+    },
+    "byRegion": "By region",
+    "whenDone": "When it finishes",
+    "whenDoneBody": "Items marked “retry later” are usually VPC dependencies that AWS releases a few minutes after their children are gone. Run “Scan again” to pick them up.",
+    "scanAgain": "Scan again",
+    "export": "Export report (JSON)",
+    "done": "Done"
+  },
+  "history": {
+    "title": "History",
+    "sub": "Stored only in this browser (IndexedDB). The server keeps nothing.",
+    "clear": "Clear history",
+    "empty": "No runs yet",
+    "emptyBody": "Scans and clean-ups you run in this browser will show up here.",
+    "kind": {
+      "scan": "Scan",
+      "nuke": "Clean"
+    },
+    "stats": {
+      "found": "found",
+      "protected": "protected",
+      "types": "types",
+      "deleted": "deleted",
+      "retry": "to retry",
+      "failed": "failed",
+      "duration": "duration"
+    },
+    "view": "View",
+    "export": "Export",
+    "delete": "Delete",
+    "state": {
+      "succeeded": "completed",
+      "failed": "failed",
+      "cancelled": "cancelled",
+      "running": "running",
+      "queued": "queued"
+    },
+    "actions": "Actions",
+    "durMin": "{{m}}m {{s}}s",
+    "durSec": "{{s}}s"
+  },
+  "job": {
+    "state": {
+      "queued": "Queued",
+      "running": "Running",
+      "succeeded": "Completed",
+      "failed": "Failed",
+      "cancelled": "Cancelled"
+    },
+    "notFound": "This job is no longer available. Jobs are kept in memory for a limited time.",
+    "cancelled": "Cancelled"
+  },
+  "settings": {
+    "title": "Settings",
+    "close": "Close",
+    "copy": "Copy",
+    "copied": "Copied",
+    "tabs": {
+      "credentials": "Credentials",
+      "appearance": "Appearance",
+      "language": "Language",
+      "about": "About"
+    },
+    "credentials": {
+      "account": "Account",
+      "identity": "Identity",
+      "validity": "Validity",
+      "notConnectedBody": "Go back to step one and paste temporary credentials.",
+      "connect": "Connect"
+    },
+    "about": {
+      "blurb": "Free and open source. Wipes an AWS account after a PoC.",
+      "version": "Version",
+      "engine": "Engine",
+      "license": "License",
+      "source": "Source",
+      "iamPolicy": "IAM policy",
+      "security": "Security notes"
+    }
+  },
+  "connect": {
+    "title": "Connect an AWS account"
+  },
+  "landing": {
+    "h1": "One broom. A clean AWS account when the PoC is done",
+    "lead": "No more hunting for leftovers across a dozen consoles. Pick regions and services, scan, review, confirm, and let the broom do the rest. No sign-up, nothing stored.",
+    "src": "View source",
+    "fine": "Use a 1-hour STS session",
+    "f": {
+      "h": "Every step visible, every item unticked at will",
+      "p": "Deletion is irreversible, so each part of the tool is built around “you saw it, you confirmed it”."
+    },
+    "c1": {
+      "t": "Review by resource ID",
+      "s": "Review · tick one by one",
+      "a": "Ticked",
+      "b": "Protected"
+    },
+    "c2": {
+      "t": "Credentials in memory only",
+      "s": "Session · never on disk",
+      "a": "Idle wipe",
+      "b": "Lifetime"
+    },
+    "c3": {
+      "t": "Scan again before deleting",
+      "s": "Rescan · intersection only",
+      "a": "New items",
+      "b": "Vanished",
+      "aUnit": "",
+      "bVal": "flag"
+    },
+    "c4": {
+      "t": "High-risk stays off",
+      "s": "Risk · opt in explicitly",
+      "a": "High-risk",
+      "b": "Default",
+      "groups": "3 groups",
+      "off": "OFF"
+    },
+    "c5": {
+      "t": "Per-resource live results",
+      "s": "Progress · regions in parallel",
+      "a": "Deleted",
+      "b": "Warnings"
+    },
+    "tr": {
+      "h": "See exactly what goes before anything goes",
+      "p": "The first four steps change nothing in the account.",
+      "1": "Tick the regions to clean; global services are listed separately.",
+      "2": "Tick resource types by group; high-risk ones are off by default.",
+      "3": "Read-only scan listing every resource in the account.",
+      "4": "Check, tick or exclude by resource ID.",
+      "5": "Re-type the account ID, then watch results arrive live."
+    },
+    "st": {
+      "1": "Regions",
+      "2": "Services",
+      "3": "Scan",
+      "5": "Clean",
+      "4": "Review"
+    },
+    "rg": {
+      "cur": "Selection",
+      "acc": "Account",
+      "n": "Regions",
+      "hint": "Click a location on the map to select it; global services are handled in the next step."
+    },
+    "lg": {
+      "sel": "selected",
+      "on": "enabled",
+      "opt": "opt-in, not enabled"
+    },
+    "sv": {
+      "types": "{{n}} resource types",
+      "ct": "Containers",
+      "sl": "Serverless",
+      "db": "Databases",
+      "st": "Storage",
+      "sec": "Security & keys",
+      "sum": "6 of 8 groups · 78 resource types",
+      "go": "Start scan"
+    },
+    "r": {
+      "lo": "low risk",
+      "md": "medium",
+      "hi": "high risk",
+      "ok": "deleted",
+      "gone": "already gone"
+    },
+    "sc": {
+      "prog": "Progress",
+      "found": "Found",
+      "nodel": "Not deletable",
+      "err": "Errors",
+      "byreg": "By region"
+    },
+    "th": {
+      "ty": "Type",
+      "reg": "Region",
+      "id": "Identifier",
+      "st": "State",
+      "res": "Result"
+    },
+    "rv": {
+      "reg": "Regions",
+      "svc": "Services",
+      "found": "Found",
+      "nodel": "Cannot delete",
+      "will": "Will delete",
+      "prot": "termination protection",
+      "sel": "selected",
+      "kept": "protected",
+      "go": "Delete 182 resources…"
+    },
+    "cl": {
+      "done": "Deleted",
+      "retry": "Retry later",
+      "fail": "Failed",
+      "left": "Remaining",
+      "wait": "waiting…"
+    },
+    "se": {
+      "h": "Keys stay in memory, and not for long",
+      "p": "The full path from paste to wipe. No database, no disk, no logs."
+    },
+    "cf": {
+      "1": "Browser",
+      "1s": "Paste a one-hour temporary credential",
+      "a1": "HTTPS\none submit",
+      "2": "Server memory",
+      "2s": "Verified, then kept only here",
+      "s1": "Wiped when any of these happens",
+      "s1a": "sign out",
+      "s1b": "idle 60 min",
+      "s1c": "12 h max",
+      "s1d": "restart",
+      "a2": "environment",
+      "3": "worker subprocess",
+      "3s": "One per scan or clean",
+      "s2": "Isolated from the host",
+      "s2a": "no ~/.aws",
+      "s2b": "IMDS off",
+      "s2c": "no telemetry",
+      "a3": "selected regions\n& services only",
+      "4s": "Job ends, process exits"
+    },
+    "cta": {
+      "h": "Use the hosted instance, or run it yourself with one command",
+      "p": "One Go binary, one container, no database. Distroless image, non-root, no telemetry.",
+      "a": "Connect AWS account",
+      "b": "Read the security notes"
+    },
+    "copy": "Copy",
+    "code": {
+      "c": "# Put Traefik / Caddy in front for HTTPS"
+    },
+    "ft": {
+      "p": "A free, open-source AWS account cleaner. Deletion is done by Gruntwork's cloud-nuke. Use on sandbox and PoC accounts only.",
+      "h1": "Project",
+      "src": "Source",
+      "h2": "Docs",
+      "iam": "IAM policy",
+      "sec": "Security notes",
+      "host": "Self-host",
+      "releases": "Releases",
+      "legal": "© 2026 AWS Broom · MIT License"
+    },
+    "fineLink": "minimal IAM policy",
+    "copied": "Copied",
+    "connect": "Connect AWS account",
+    "aria": {
+      "steps": "Steps",
+      "preview": "Application preview",
+      "services": "Supported services",
+      "credFlow": "Credential flow"
+    },
+    "shotAlt": "The Review step of AWS Broom",
+    "venn": {
+      "rescan": "RESCAN",
+      "confirmed": "CONFIRMED"
+    },
+    "high": "HIGH"
+  },
+  "terminal": {
+    "filter": "Filter…",
+    "wrap": "Wrap lines",
+    "follow": "Follow tail",
+    "copy": "Copy",
+    "copied": "Copied",
+    "close": "Close",
+    "lines": "{{n}} lines",
+    "empty": "Nothing matches"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "body": "An unexpected error occurred.",
+    "notFoundTitle": "404",
+    "notFoundBody": "The requested page could not be found.",
+    "home": "Home"
+  }
+}
