@@ -11,7 +11,7 @@ require (
 	github.com/gruntwork-io/cloud-nuke v0.52.1-0.20260910024755-306d2b7794b9
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/pterm/pterm v0.12.83
-	golang.org/x/sync v0.22.0
+	golang.org/x/sync v0.23.0
 )
 
 require (
