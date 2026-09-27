@@ -3,6 +3,7 @@ package jobs
 import (
 	"context"
 	"errors"
+	"sort"
 	"sync"
 	"time"
 
@@ -74,6 +75,22 @@ func (s *Store) Get(id string) (*Job, error) {
 		return nil, ErrNotFound
 	}
 	return j, nil
+}
+
+// ForSession returns every job the session still owns, newest first. The
+// browser uses it to find a scan or cleanup it navigated away from and to
+// back-fill its local history with results it missed.
+func (s *Store) ForSession(sessionID string) []*Job {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	var out []*Job
+	for _, j := range s.jobs {
+		if j.SessionID == sessionID {
+			out = append(out, j)
+		}
+	}
+	sort.Slice(out, func(a, b int) bool { return out[a].CreatedAt.After(out[b].CreatedAt) })
+	return out
 }
 
 // Cancel stops a running job. It is a no-op for finished jobs.

@@ -27,6 +27,10 @@
       "light": "Light",
       "dark": "Dark",
       "system": "System"
+    },
+    "running": {
+      "scan": "Scanning",
+      "nuke": "Cleaning"
     }
   },
   "common": {
@@ -217,31 +221,78 @@
     "title": "History",
     "sub": "Stored only in this browser (IndexedDB). The server keeps nothing.",
     "clear": "Clear history",
+    "clearTitle": "Clear all history?",
+    "clearBody": "Removes the {{n}} records saved in this browser. This cannot be undone.",
+    "exportAll": "Export all",
     "empty": "No runs yet",
     "emptyBody": "Scans and clean-ups you run in this browser will show up here.",
+    "start": "Start the wizard",
     "kind": {
       "scan": "Scan",
       "nuke": "Clean"
     },
+    "filter": {
+      "all": "All",
+      "scan": "Scan",
+      "nuke": "Clean"
+    },
+    "records": "{{n}} records",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "live": {
+      "nuke": "Cleaning up",
+      "scan": "Scanning",
+      "queued": "Queued",
+      "rescan": "Re-scanning",
+      "startedAt": "started",
+      "elapsed": "elapsed",
+      "view": "View"
+    },
     "stats": {
       "found": "found",
       "protected": "protected",
+      "nukable": "deletable",
+      "errors": "errors",
       "types": "types",
       "deleted": "deleted",
+      "gone": "already gone",
       "retry": "to retry",
       "failed": "failed",
-      "duration": "duration"
+      "duration": "duration",
+      "selected": "confirmed",
+      "typesN": "{{n}} resource types",
+      "olderThan": "older than {{h}}h"
     },
     "view": "View",
-    "export": "Export",
-    "delete": "Delete",
+    "export": "Export JSON",
+    "rescan": "Scan again",
+    "delete": "Delete record",
+    "deleteTitle": "Delete this record?",
+    "deleteBody": "Removes only this browser's record. The AWS account is not touched.",
     "state": {
       "succeeded": "completed",
       "failed": "failed",
       "cancelled": "cancelled",
       "running": "running",
-      "queued": "queued"
+      "queued": "queued",
+      "lost": "not recorded"
     },
+    "notFound": "No such record",
+    "notFoundBody": "It may have been deleted, or it lives in another browser.",
+    "lostBody": "This browser left the page while the clean-up was running. The job finished on the server but its result never synced back, and the server no longer keeps it. Scan again to see the account's actual state.",
+    "runningBody": "The job is still running; its result is written to this record when it finishes.",
+    "failedBody": "The job stopped with an error:",
+    "result": {
+      "all": "All",
+      "deleted": "deleted",
+      "gone": "already gone",
+      "retry": "retry in ~30 min",
+      "fail": "failed",
+      "nukable": "deletable",
+      "protected": "protected"
+    },
+    "searchPh": "Search identifiers…",
+    "shown": "{{a}} of {{b}}",
     "actions": "Actions",
     "durMin": "{{m}}m {{s}}s",
     "durSec": "{{s}}s"

@@ -71,7 +71,7 @@ export default function Regions() {
         rail={
           <Rail>
             <RailCard title={t("common.selection")}>
-              <Toolbar className="mb-3 justify-start">
+              <Toolbar align="start">
 {
               <>
               <Button size="xs" variant="outline" onClick={() => setRegions(enabledCodes)} disabled={!q.data}>

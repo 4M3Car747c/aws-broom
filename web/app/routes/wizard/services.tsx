@@ -210,7 +210,7 @@ export default function Services() {
         rail={
           <Rail>
             <RailCard title={t("common.selection")}>
-              <Toolbar className="mb-3 justify-start">
+              <Toolbar align="start">
 {
               <>
               <Button size="xs" variant="outline" onClick={() => wiz.setResourceTypes(defaultSet(services))} disabled={!catalog.data}>

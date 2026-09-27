@@ -257,6 +257,64 @@ func (j *Job) Found() map[string]FoundResource {
 	return out
 }
 
+// Brief is the list view of a job: everything Snapshot has except the
+// per-resource lists, which are replaced by counts.
+type Brief struct {
+	ID            string          `json:"id"`
+	Mode          engine.Mode     `json:"mode"`
+	State         State           `json:"state"`
+	Phase         string          `json:"phase,omitempty"`
+	AccountID     string          `json:"accountId"`
+	Regions       []string        `json:"regions"`
+	ResourceTypes []string        `json:"resourceTypes"`
+	OlderThan     string          `json:"olderThan,omitempty"`
+	CreatedAt     time.Time       `json:"createdAt"`
+	StartedAt     *time.Time      `json:"startedAt,omitempty"`
+	FinishedAt    *time.Time      `json:"finishedAt,omitempty"`
+	Error         string          `json:"error,omitempty"`
+	Scanned       int             `json:"scanned"`
+	Found         int             `json:"found"`
+	Selected      int             `json:"selected"` // resources a nuke job was asked to delete
+	Deleted       int             `json:"deleted"`
+	Warned        int             `json:"warned"`
+	Failed        int             `json:"failed"`
+	Errors        int             `json:"errors"`
+	Summary       *engine.Summary `json:"summary,omitempty"`
+}
+
+// Brief builds the list view.
+func (j *Job) Brief() Brief {
+	j.mu.RLock()
+	defer j.mu.RUnlock()
+	b := Brief{
+		ID: j.ID, Mode: j.Spec.Mode, State: j.state, Phase: j.phase, AccountID: j.AccountID,
+		Regions: j.Spec.Regions, ResourceTypes: j.Spec.ResourceTypes, CreatedAt: j.CreatedAt, Error: j.errMsg,
+		Scanned: len(j.scanned), Found: len(j.foundOrd), Selected: len(j.Spec.Selections), Errors: len(j.genErrs), Summary: j.summary,
+	}
+	if j.Spec.OlderThan != nil && j.Spec.OlderThan.Duration > 0 {
+		b.OlderThan = j.Spec.OlderThan.String()
+	}
+	if !j.startedAt.IsZero() {
+		t := j.startedAt
+		b.StartedAt = &t
+	}
+	if !j.finishedAt.IsZero() {
+		t := j.finishedAt
+		b.FinishedAt = &t
+	}
+	for _, r := range j.results {
+		switch {
+		case r.Success:
+			b.Deleted++
+		case r.Warning:
+			b.Warned++
+		default:
+			b.Failed++
+		}
+	}
+	return b
+}
+
 // Snapshot builds the JSON view.
 func (j *Job) Snapshot() Snapshot {
 	j.mu.RLock()

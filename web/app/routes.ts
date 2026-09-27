@@ -4,6 +4,7 @@ export default [
   index("routes/home.tsx"),
   route("connect", "routes/connect.tsx"),
   route("history", "routes/history.tsx"),
+  route("history/:id", "routes/history-detail.tsx"),
   layout("routes/wizard/layout.tsx", [
     ...prefix("wizard", [
       index("routes/wizard/index.tsx"),

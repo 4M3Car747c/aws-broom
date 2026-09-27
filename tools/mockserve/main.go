@@ -6,6 +6,7 @@
 //
 // Any access key / secret is accepted. Scans "find" a few resources per region;
 // nukes delete them with a mix of success, warning and failure outcomes.
+// MOCK_NUKE_STEP=3s slows deletions down for walking through the UI.
 package main
 
 import (
@@ -189,8 +190,14 @@ func fakeWorker() int {
 
 	found := scan("rescan")
 	e.emit(engine.Event{Type: engine.EvPhase, Phase: "nuke", Message: "deleting"})
+	// MOCK_NUKE_STEP slows each deletion (e.g. "3s") to leave time to walk
+	// away from the clean-up page and come back to it.
+	step := 350 * time.Millisecond
+	if d, err := time.ParseDuration(os.Getenv("MOCK_NUKE_STEP")); err == nil && d > 0 {
+		step = d
+	}
 	for i, sel := range spec.Selections {
-		time.Sleep(350 * time.Millisecond)
+		time.Sleep(step)
 		success, warning, errStr, note := true, false, "", ""
 		switch {
 		case !found[sel.Key()]:

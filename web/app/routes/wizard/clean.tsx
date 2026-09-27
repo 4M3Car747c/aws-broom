@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { DownloadIcon, RefreshCwIcon } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useParams } from "react-router";
 
@@ -12,11 +12,11 @@ import { Spinner } from "~/components/ui/spinner";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import { toast } from "~/components/ui/toast";
 import { ApiError, api, isTerminal, type DeleteResult } from "~/lib/api";
-import { downloadJSON, saveHistory } from "~/lib/history";
+import { downloadJSON, olderThanHours, toHistory } from "~/lib/history";
+import { useJobSync } from "~/lib/jobs";
 import { isSessionError, useSession } from "~/lib/session";
 import { useJob } from "~/lib/use-job";
 import { useWizard } from "~/lib/wizard";
-import { toHistory } from "./scan";
 import { i18n } from "~/lib/i18n";
 
 export function meta() {
@@ -32,19 +32,13 @@ export default function Clean() {
   const wiz = useWizard();
   const { job, error, sessionExpired } = useJob(jobId);
   const [stopping, setStopping] = useState(false);
-  const saved = useRef(false);
+  useJobSync(job);
 
   useEffect(() => {
     if (!sessionExpired) return;
     toast.add({ title: t("common.sessionExpired"), type: "error" });
     expire();
   }, [sessionExpired, expire, t]);
-
-  useEffect(() => {
-    if (!job || !isTerminal(job.state) || saved.current) return;
-    saved.current = true;
-    void saveHistory(toHistory(job));
-  }, [job]);
 
   const rescan = useMutation({
     mutationFn: () => {
@@ -53,7 +47,7 @@ export default function Clean() {
       return api.createScan({
         regions: job!.spec.regions,
         resourceTypes: job!.spec.resourceTypes,
-        olderThanHours: job!.spec.olderThan ? Math.round(parseGoDuration(job!.spec.olderThan) / 3600) : undefined,
+        olderThanHours: olderThanHours(job!.spec.olderThan) ?? undefined,
       });
     },
     onSuccess: (res) => navigate(`/wizard/scan/${res.jobId}`),
@@ -161,7 +155,7 @@ export default function Clean() {
       <TwoCol
         rail={
           <Rail>
-            <Toolbar className="mb-0">
+            <Toolbar align="start">
 {
         running ? (
               <Button variant="outline" onClick={() => void stop()} disabled={stopping}>
@@ -281,16 +275,4 @@ function shortError(err?: string): string {
   const m = /api error ([A-Za-z.]+)/.exec(err);
   if (m) return m[1];
   return err.length > 60 ? err.slice(0, 60) + "…" : err;
-}
-
-function parseGoDuration(s: string): number {
-  // "24h0m0s" -> seconds
-  let total = 0;
-  const re = /(\d+(?:\.\d+)?)(h|m|s)/g;
-  let m: RegExpExecArray | null;
-  while ((m = re.exec(s))) {
-    const v = parseFloat(m[1]);
-    total += m[2] === "h" ? v * 3600 : m[2] === "m" ? v * 60 : v;
-  }
-  return total;
 }

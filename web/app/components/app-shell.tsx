@@ -4,7 +4,9 @@ import { useTranslation } from "react-i18next";
 import { NavLink, useLocation, useNavigate } from "react-router";
 import { cn } from "cn";
 
+import { Segmented } from "~/components/bits";
 import { SettingsDialog, type SettingsTab } from "~/components/settings-dialog";
+import { Spinner } from "~/components/ui/spinner";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,7 +15,8 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { setLang, type Lang } from "~/lib/i18n";
-import { type SessionInfo } from "~/lib/api";
+import { jobPath, useJobs } from "~/lib/jobs";
+import { type JobBrief, type SessionInfo } from "~/lib/api";
 import { setTheme, type Theme, useTheme } from "~/lib/use-dark";
 import { useSession } from "~/lib/session";
 
@@ -64,36 +67,6 @@ export function Avatar({ info, className }: { info: SessionInfo | null; classNam
       )}
     >
       <img src="/avatar.webp" alt="" width={32} height={32} className={cn("size-[82%] object-contain", !info && "opacity-50 grayscale")} />
-    </span>
-  );
-}
-
-function Segmented<T extends string>({
-  label,
-  value,
-  options,
-  onChange,
-}: {
-  label: string;
-  value: T;
-  options: { value: T; label: string; icon?: React.ReactNode }[];
-  onChange: (v: T) => void;
-}) {
-  return (
-    <span className="inline-flex shrink-0 rounded-lg bg-muted p-0.5" role="group" aria-label={label}>
-      {options.map((o) => (
-        <button
-          key={o.value}
-          type="button"
-          aria-pressed={value === o.value}
-          aria-label={o.icon ? o.label : undefined}
-          title={o.icon ? o.label : undefined}
-          onClick={() => onChange(o.value)}
-          className="grid h-6 min-w-7 place-items-center rounded-md px-[7px] text-xs font-medium text-muted-foreground transition-colors hover:text-foreground aria-pressed:bg-popover aria-pressed:text-card-foreground aria-pressed:shadow-xs dark:aria-pressed:bg-accent [&_svg]:size-3.5"
-        >
-          {o.icon ?? o.label}
-        </button>
-      ))}
     </span>
   );
 }
@@ -196,9 +169,36 @@ function AccountMenu({ onOpenSettings }: { onOpenSettings: (tab: SettingsTab) =>
   );
 }
 
+/**
+ * Way back to a scan or clean-up that is still running on the server, shown
+ * beside the nav on every page. Without it, leaving the wizard mid-run left
+ * the job unreachable until it finished.
+ */
+function RunningPill({ job }: { job: JobBrief }) {
+  const { t } = useTranslation();
+  const nuke = job.mode === "nuke";
+  return (
+    <NavLink
+      to={jobPath(job)}
+      className={({ isActive }) =>
+        cn(
+          "flex h-8 items-center gap-2 rounded-full pr-3 pl-2.5 text-sm font-medium transition-colors",
+          nuke ? "bg-destructive/12 text-destructive" : "bg-primary/12 text-primary",
+          isActive ? "ring-1 ring-current/30" : "hover:ring-1 hover:ring-current/30",
+        )
+      }
+      title={`${job.accountId} · ${job.regions.join(", ")}`}
+    >
+      <Spinner className="size-3.5" />
+      {t(nuke ? "app.running.nuke" : "app.running.scan")}
+    </NavLink>
+  );
+}
+
 export function AppShell({ children }: { children: React.ReactNode }) {
   const { t } = useTranslation();
   const { pathname } = useLocation();
+  const { running } = useJobs();
   const [settings, setSettings] = useState<SettingsTab | null>(null);
   const landing = pathname === "/";
   // The bar is as wide as the page's content column: 1152px on the landing/connect pages, 1440px inside the app.
@@ -236,6 +236,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <NavLink to="/history" className={({ isActive }) => navClass(isActive)}>
                 {t("app.nav.history")}
               </NavLink>
+              {running.map((j) => (
+                <RunningPill key={j.id} job={j} />
+              ))}
             </nav>
           </div>
           <span className="flex-1" />

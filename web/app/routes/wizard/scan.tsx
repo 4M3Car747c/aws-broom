@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { ChevronRightIcon } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useParams } from "react-router";
 import { cn } from "cn";
@@ -14,8 +14,8 @@ import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "~/components/u
 import { Spinner } from "~/components/ui/spinner";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import { toast } from "~/components/ui/toast";
-import { api, isTerminal, type Job } from "~/lib/api";
-import { saveHistory } from "~/lib/history";
+import { api, isTerminal } from "~/lib/api";
+import { useJobSync } from "~/lib/jobs";
 import { useSession } from "~/lib/session";
 import { useJob } from "~/lib/use-job";
 import { i18n } from "~/lib/i18n";
@@ -33,7 +33,7 @@ export default function Scan() {
   const { expire } = useSession();
   const catalog = useQuery({ queryKey: ["catalog"], queryFn: api.catalog, staleTime: Infinity });
   const [cancelling, setCancelling] = useState(false);
-  const saved = useRef(false);
+  useJobSync(job);
 
   useEffect(() => {
     if (!sessionExpired) return;
@@ -53,13 +53,6 @@ export default function Scan() {
     const global = job.spec.resourceTypes.length - regional;
     return regional * job.spec.regions.length + global;
   }, [job, globalTypes]);
-
-  // Persist to browser history once the job finishes.
-  useEffect(() => {
-    if (!job || !isTerminal(job.state) || saved.current) return;
-    saved.current = true;
-    void saveHistory(toHistory(job));
-  }, [job]);
 
   if (error && !job) {
     return (
@@ -153,7 +146,7 @@ export default function Scan() {
       <TwoCol
         rail={
           <Rail>
-            <Toolbar className="mb-0">
+            <Toolbar align="start">
 {
         running ? (
               <Button variant="outline" onClick={() => void cancel()} disabled={cancelling}>
@@ -271,23 +264,4 @@ export default function Scan() {
       )}
     </>
   );
-}
-
-export function toHistory(job: Job) {
-  return {
-    id: job.id,
-    kind: job.mode,
-    accountId: job.accountId,
-    createdAt: job.createdAt,
-    finishedAt: job.finishedAt,
-    state: job.state,
-    regions: job.spec.regions,
-    resourceTypes: job.spec.resourceTypes,
-    olderThan: job.spec.olderThan,
-    summary: job.summary,
-    found: job.found,
-    results: job.results,
-    errors: job.errors,
-    error: job.error,
-  };
 }

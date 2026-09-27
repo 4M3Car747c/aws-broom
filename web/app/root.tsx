@@ -6,6 +6,7 @@ import { isRouteErrorResponse, Link, Links, Meta, Outlet, Scripts, ScrollRestora
 import { AppShell } from "~/components/app-shell";
 import { Button } from "~/components/ui/button";
 import { Toaster } from "~/components/ui/toast";
+import { JobsProvider } from "~/lib/jobs";
 import { SessionProvider } from "~/lib/session";
 import "~/lib/i18n";
 import "./app.css";
@@ -62,10 +63,12 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider>
-        <AppShell>
-          <Outlet />
-        </AppShell>
-        <Toaster />
+        <JobsProvider>
+          <AppShell>
+            <Outlet />
+          </AppShell>
+          <Toaster />
+        </JobsProvider>
       </SessionProvider>
     </QueryClientProvider>
   );

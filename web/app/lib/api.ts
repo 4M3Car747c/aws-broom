@@ -119,6 +119,31 @@ export const JobSchema = z.object({
 });
 export type Job = z.infer<typeof JobSchema>;
 
+/** List view of a job: counts instead of per-resource lists. */
+export const JobBriefSchema = z.object({
+  id: z.string(),
+  mode: z.enum(["scan", "nuke"]),
+  state: JobStateSchema,
+  phase: z.string().optional(),
+  accountId: z.string(),
+  regions: arr(z.string()),
+  resourceTypes: arr(z.string()),
+  olderThan: z.string().optional(),
+  createdAt: z.string(),
+  startedAt: z.string().optional(),
+  finishedAt: z.string().optional(),
+  error: z.string().optional(),
+  scanned: z.number(),
+  found: z.number(),
+  selected: z.number(),
+  deleted: z.number(),
+  warned: z.number(),
+  failed: z.number(),
+  errors: z.number(),
+  summary: SummarySchema.optional(),
+});
+export type JobBrief = z.infer<typeof JobBriefSchema>;
+
 export const EventTypeSchema = z.enum([
   "phase",
   "scan_progress",
@@ -155,6 +180,40 @@ export type JobEvent = z.infer<typeof EventSchema>;
 
 export function isTerminal(state: JobState): boolean {
   return state === "succeeded" || state === "failed" || state === "cancelled";
+}
+
+/** Reduces a live snapshot to the list view the server returns from GET /api/jobs. */
+export function briefOf(job: Job): JobBrief {
+  let deleted = 0;
+  let warned = 0;
+  let failed = 0;
+  for (const r of job.results) {
+    if (r.success) deleted++;
+    else if (r.warning) warned++;
+    else failed++;
+  }
+  return {
+    id: job.id,
+    mode: job.mode,
+    state: job.state,
+    phase: job.phase,
+    accountId: job.accountId,
+    regions: job.spec.regions,
+    resourceTypes: job.spec.resourceTypes,
+    olderThan: job.spec.olderThan,
+    createdAt: job.createdAt,
+    startedAt: job.startedAt,
+    finishedAt: job.finishedAt,
+    error: job.error,
+    scanned: job.scanned,
+    found: job.found.length,
+    selected: job.spec.selections?.length ?? 0,
+    deleted,
+    warned,
+    failed,
+    errors: job.errors.length,
+    summary: job.summary,
+  };
 }
 
 export function selectionKey(s: { resourceType: string; region: string; identifier: string }): string {
@@ -219,6 +278,7 @@ export const api = {
       body: JSON.stringify(body),
     }),
 
+  jobs: () => request(z.object({ jobs: arr(JobBriefSchema) }), "/api/jobs"),
   job: (id: string) => request(JobSchema, `/api/jobs/${encodeURIComponent(id)}`),
   cancelJob: (id: string) =>
     request(z.object({ state: JobStateSchema }), `/api/jobs/${encodeURIComponent(id)}`, { method: "DELETE" }),

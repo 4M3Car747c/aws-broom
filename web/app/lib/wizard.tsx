@@ -31,6 +31,18 @@ function load(): WizardState {
   }
 }
 
+/**
+ * Seeds the wizard from outside its provider (e.g. "scan again" on a history
+ * record) so the regions and services steps open pre-selected.
+ */
+export function presetWizard(state: WizardState) {
+  try {
+    window.sessionStorage.setItem(KEY, JSON.stringify(state));
+  } catch {
+    /* ignore */
+  }
+}
+
 const Ctx = createContext<WizardCtx | null>(null);
 
 export function WizardProvider({ children }: { children: React.ReactNode }) {

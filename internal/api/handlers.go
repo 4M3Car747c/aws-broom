@@ -361,6 +361,18 @@ func (s *Server) jobFor(w http.ResponseWriter, r *http.Request) (*jobs.Job, bool
 	return job, true
 }
 
+// handleListJobs lists the session's jobs (running and recently finished),
+// newest first, without per-resource detail.
+func (s *Server) handleListJobs(w http.ResponseWriter, r *http.Request) {
+	sess := sessionFrom(r)
+	all := s.cfg.Jobs.ForSession(sess.ID)
+	out := make([]jobs.Brief, 0, len(all))
+	for _, j := range all {
+		out = append(out, j.Brief())
+	}
+	writeJSON(w, http.StatusOK, map[string]any{"jobs": out})
+}
+
 func (s *Server) handleGetJob(w http.ResponseWriter, r *http.Request) {
 	job, ok := s.jobFor(w, r)
 	if !ok {

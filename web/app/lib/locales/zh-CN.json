@@ -27,6 +27,10 @@
       "light": "亮色",
       "dark": "暗色",
       "system": "跟随系统"
+    },
+    "running": {
+      "scan": "扫描中",
+      "nuke": "清理中"
     }
   },
   "common": {
@@ -217,31 +221,78 @@
     "title": "历史记录",
     "sub": "仅保存在当前浏览器（IndexedDB），服务端不保留任何记录。",
     "clear": "清空历史",
+    "clearTitle": "清空全部历史记录？",
+    "clearBody": "将删除此浏览器中保存的 {{n}} 条记录，无法恢复。",
+    "exportAll": "导出全部",
     "empty": "还没有记录",
     "emptyBody": "在此浏览器中运行的扫描和清理会显示在这里。",
+    "start": "开始清理向导",
     "kind": {
       "scan": "扫描",
       "nuke": "清理"
     },
+    "filter": {
+      "all": "全部",
+      "scan": "扫描",
+      "nuke": "清理"
+    },
+    "records": "{{n}} 条记录",
+    "today": "今天",
+    "yesterday": "昨天",
+    "live": {
+      "nuke": "正在清理",
+      "scan": "正在扫描",
+      "queued": "排队中",
+      "rescan": "正在重新扫描",
+      "startedAt": "开始于",
+      "elapsed": "已用",
+      "view": "查看"
+    },
     "stats": {
       "found": "发现",
       "protected": "受保护",
+      "nukable": "可删除",
+      "errors": "错误",
       "types": "类型",
       "deleted": "已删除",
+      "gone": "已不存在",
       "retry": "待重试",
       "failed": "失败",
-      "duration": "耗时"
+      "duration": "耗时",
+      "selected": "已确认删除",
+      "typesN": "{{n}} 种资源类型",
+      "olderThan": "早于 {{h}} 小时"
     },
     "view": "查看",
-    "export": "导出",
-    "delete": "删除",
+    "export": "导出 JSON",
+    "rescan": "再次扫描",
+    "delete": "删除记录",
+    "deleteTitle": "删除这条记录？",
+    "deleteBody": "只删除浏览器里的这条记录，不影响 AWS 账号。",
     "state": {
       "succeeded": "已完成",
       "failed": "失败",
       "cancelled": "已取消",
       "running": "运行中",
-      "queued": "排队中"
+      "queued": "排队中",
+      "lost": "结果未记录"
     },
+    "notFound": "没有这条记录",
+    "notFoundBody": "它可能已被删除，或保存在另一台浏览器里。",
+    "lostBody": "这次清理开始后浏览器离开了页面，任务在服务端完成但结果没有同步回来；服务端现已不再保留该任务。账号内的实际状态请再次扫描确认。",
+    "runningBody": "任务仍在运行，结果会在结束后写入这条记录。",
+    "failedBody": "任务因错误停止：",
+    "result": {
+      "all": "全部",
+      "deleted": "已删除",
+      "gone": "已不存在",
+      "retry": "约 30 分钟后重试",
+      "fail": "失败",
+      "nukable": "可删除",
+      "protected": "受保护"
+    },
+    "searchPh": "搜索标识…",
+    "shown": "显示 {{a}} / {{b}}",
     "actions": "操作",
     "durMin": "{{m}} 分 {{s}} 秒",
     "durSec": "{{s}} 秒"

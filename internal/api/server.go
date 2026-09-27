@@ -93,6 +93,7 @@ func (s *Server) routes() {
 	m.HandleFunc("GET /api/session/regions", s.auth(s.handleRegions))
 	m.HandleFunc("POST /api/scans", s.auth(s.handleCreateScan))
 	m.HandleFunc("POST /api/nukes", s.auth(s.handleCreateNuke))
+	m.HandleFunc("GET /api/jobs", s.auth(s.handleListJobs))
 	m.HandleFunc("GET /api/jobs/{id}", s.auth(s.handleGetJob))
 	m.HandleFunc("GET /api/jobs/{id}/events", s.auth(s.handleJobEvents))
 	m.HandleFunc("DELETE /api/jobs/{id}", s.auth(s.handleCancelJob))

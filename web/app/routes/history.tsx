@@ -1,29 +1,59 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { DownloadIcon, EllipsisIcon, EyeIcon, Trash2Icon } from "lucide-react";
+import { ChevronRightIcon } from "lucide-react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router";
-import { cn } from "cn";
+import { Link, useNavigate } from "react-router";
 
-import { PageHeader } from "~/components/bits";
-import { Badge } from "~/components/ui/badge";
+import { PageHeader, Segmented } from "~/components/bits";
+import { KindTag, LiveJobCard, Outcome, dayLabel, durationOf, formatDur, formatTime, regionsShort } from "~/components/history-bits";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "~/components/ui/alert-dialog";
 import { Button } from "~/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "~/components/ui/dropdown-menu";
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "~/components/ui/empty";
-import { clearHistory, deleteHistory, downloadJSON, listHistory, type HistoryEntry } from "~/lib/history";
-import { useSession } from "~/lib/session";
+import { clearHistory, downloadJSON, isHistoryTerminal, listHistory, type HistoryEntry } from "~/lib/history";
+import { useJobs } from "~/lib/jobs";
 import { i18n } from "~/lib/i18n";
 
 export function meta() {
   return [{ title: `${i18n.t("app.nav.history")} · AWS Broom` }];
 }
 
+type Kind = "all" | "scan" | "nuke";
+
 export default function History() {
   const { t, i18n } = useTranslation();
   const qc = useQueryClient();
-  const { status } = useSession();
+  const navigate = useNavigate();
+  const { running } = useJobs();
+  const [kind, setKind] = useState<Kind>("all");
+  const [confirmClear, setConfirmClear] = useState(false);
   const q = useQuery({ queryKey: ["history"], queryFn: listHistory, staleTime: 0 });
-  const entries = q.data ?? [];
+  const all = q.data ?? [];
+
+  // Jobs the tracker shows live above the list stay out of the list itself.
+  const liveIds = useMemo(() => new Set(running.map((j) => j.id)), [running]);
+  const entries = useMemo(() => all.filter((e) => !liveIds.has(e.id) || isHistoryTerminal(e.state)), [all, liveIds]);
+  const shown = useMemo(() => entries.filter((e) => kind === "all" || e.kind === kind), [entries, kind]);
+
+  const groups = useMemo(() => {
+    const out: { label: string; items: HistoryEntry[] }[] = [];
+    for (const e of shown) {
+      const label = dayLabel(new Date(e.createdAt), i18n.language, t);
+      const last = out[out.length - 1];
+      if (last && last.label === label) last.items.push(e);
+      else out.push({ label, items: [e] });
+    }
+    return out;
+  }, [shown, i18n.language, t]);
+
   const refresh = () => qc.invalidateQueries({ queryKey: ["history"] });
+  const empty = !q.isLoading && all.length === 0 && running.length === 0;
 
   return (
     <>
@@ -31,111 +61,111 @@ export default function History() {
         title={t("history.title")}
         sub={t("history.sub")}
         actions={
-          entries.length > 0 && (
-            <Button size="sm" onClick={() => void clearHistory().then(refresh)}>
-              {t("history.clear")}
-            </Button>
+          all.length > 0 && (
+            <>
+              <Button variant="ghost" onClick={() => downloadJSON(`broom-history-${new Date().toISOString().slice(0, 10)}.json`, all)}>
+                {t("history.exportAll")}
+              </Button>
+              <Button variant="outline" onClick={() => setConfirmClear(true)}>
+                {t("history.clear")}
+              </Button>
+            </>
           )
         }
       />
-      {entries.length === 0 ? (
-        <Empty>
+
+      {running.map((j) => (
+        <LiveJobCard key={j.id} job={j} />
+      ))}
+
+      {empty ? (
+        <Empty className="border border-dashed border-input">
           <EmptyHeader>
             <EmptyTitle>{t("history.empty")}</EmptyTitle>
             <EmptyDescription>{t("history.emptyBody")}</EmptyDescription>
           </EmptyHeader>
+          <Button size="lg" render={<Link to="/wizard" />}>
+            {t("history.start")}
+          </Button>
         </Empty>
       ) : (
-        <div className="grid gap-2.5">
-          {entries.map((e) => (
-            <Entry key={e.id} e={e} lang={i18n.language} authed={status === "authed"} onDelete={() => void deleteHistory(e.id).then(refresh)} />
-          ))}
-        </div>
+        all.length > 0 && (
+          <>
+            <div className="mb-2.5 flex items-center gap-3">
+              <Segmented<Kind>
+                label={t("common.type")}
+                value={kind}
+                onChange={setKind}
+                size="md"
+                options={(["all", "scan", "nuke"] as Kind[]).map((k) => ({ value: k, label: t(`history.filter.${k}`) }))}
+              />
+              <span className="flex-1" />
+              <span className="text-[13px] text-muted-foreground tabular">{t("history.records", { n: shown.length })}</span>
+            </div>
+            <div className="overflow-hidden rounded-xl border border-border bg-card shadow-xs">
+              {groups.map((g) => (
+                <div key={g.label} className="border-t border-border first:border-t-0">
+                  <div className="flex h-9 items-center bg-muted px-4 text-xs font-medium text-muted-foreground">
+                    {g.label}
+                  </div>
+                  {g.items.map((e) => (
+                    <Row key={e.id} e={e} lang={i18n.language} onOpen={() => navigate(`/history/${e.id}`)} />
+                  ))}
+                </div>
+              ))}
+            </div>
+          </>
+        )
       )}
+
+      <AlertDialog open={confirmClear} onOpenChange={setConfirmClear}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t("history.clearTitle")}</AlertDialogTitle>
+            <AlertDialogDescription>{t("history.clearBody", { n: all.length })}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <Button variant="outline" onClick={() => setConfirmClear(false)}>
+              {t("common.cancel")}
+            </Button>
+            <Button
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={() => {
+                setConfirmClear(false);
+                void clearHistory().then(refresh);
+              }}
+            >
+              {t("history.clear")}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }
 
-function Entry({ e, lang, authed, onDelete }: { e: HistoryEntry; lang: string; authed: boolean; onDelete: () => void }) {
+function Row({ e, lang, onOpen }: { e: HistoryEntry; lang: string; onOpen: () => void }) {
   const { t } = useTranslation();
-  const when = new Date(e.createdAt);
-  const dur = e.finishedAt ? Math.max(0, Math.round((new Date(e.finishedAt).getTime() - when.getTime()) / 1000)) : null;
-  const s = e.summary;
-  const stats =
-    e.kind === "scan"
-      ? [
-          [s?.found ?? e.found?.length ?? 0, t("history.stats.found")],
-          [s?.notNukable ?? 0, t("history.stats.protected")],
-          [e.resourceTypes.length, t("history.stats.types")],
-        ]
-      : [
-          [s?.deleted ?? 0, t("history.stats.deleted")],
-          [s?.warned ?? 0, t("history.stats.retry")],
-          [s?.failed ?? 0, t("history.stats.failed")],
-        ];
-  const viewTo = e.kind === "scan" ? `/wizard/review/${e.id}` : `/wizard/clean/${e.id}`;
+  const dur = durationOf(e);
   return (
-    <div className="grid items-center gap-4 rounded-xl border border-border bg-card px-4 py-3.5 shadow-xs md:grid-cols-[auto_1fr_auto]">
-      <div className="min-w-[130px] font-mono text-xs text-muted-foreground">{formatDate(when, lang)}</div>
-      <div className="min-w-0">
-        <div className="flex flex-wrap items-center gap-2">
-          <Badge className={cn("border-transparent", e.kind === "nuke" ? "bg-destructive/12 text-destructive" : "bg-primary/12 text-primary")}>
-            {t(`history.kind.${e.kind}`)}
-          </Badge>
-          <span className="font-mono text-xs">{e.accountId}</span>
-          <span className="text-muted-foreground">·</span>
-          <span className="truncate font-mono text-xs text-muted-foreground">{e.regions.join(", ")}</span>
-          {e.state !== "succeeded" && (
-            <Badge variant="outline" className="text-warn">
-              {t(`history.state.${e.state}`)}
-            </Badge>
-          )}
-        </div>
-        <div className="mt-1 flex flex-wrap gap-3.5 text-xs text-muted-foreground">
-          {stats.map(([v, l]) => (
-            <span key={String(l)}>
-              <b className="font-mono font-medium text-foreground">{v}</b> {l}
-            </span>
-          ))}
-          {dur !== null && (
-            <span>
-              <b className="font-mono font-medium text-foreground">{formatDur(dur, t)}</b> {t("history.stats.duration")}
-            </span>
-          )}
-        </div>
-      </div>
-      <DropdownMenu>
-        <DropdownMenuTrigger
-          render={<Button variant="ghost" size="icon-sm" aria-label={t("history.actions")} title={t("history.actions")} />}
-        >
-          <EllipsisIcon />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" sideOffset={6} className="min-w-40 rounded-xl p-1.5">
-          <DropdownMenuItem className="gap-2.5 rounded-lg px-2.5 py-1.5" disabled={!authed} render={<Link to={viewTo} />}>
-            <EyeIcon className="text-muted-foreground" />
-            {t("history.view")}
-          </DropdownMenuItem>
-          <DropdownMenuItem className="gap-2.5 rounded-lg px-2.5 py-1.5" onClick={() => downloadJSON(`broom-${e.kind}-${e.id}.json`, e)}>
-            <DownloadIcon className="text-muted-foreground" />
-            {t("history.export")}
-          </DropdownMenuItem>
-          <DropdownMenuSeparator className="-mx-1.5 my-1.5" />
-          <DropdownMenuItem variant="destructive" className="gap-2.5 rounded-lg px-2.5 py-1.5" onClick={onDelete}>
-            <Trash2Icon />
-            {t("history.delete")}
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+    <button
+      type="button"
+      onClick={onOpen}
+      className="grid h-12 w-full grid-cols-[auto_auto_minmax(0,1fr)_24px] items-center gap-4 border-t border-border px-4 text-left transition-colors hover:bg-accent focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring md:grid-cols-[52px_56px_128px_minmax(160px,1fr)_minmax(220px,1.2fr)_88px_24px]"
+    >
+      <span className="font-mono text-[13px] text-muted-foreground tabular">{formatTime(new Date(e.createdAt), lang)}</span>
+      <span>
+        <KindTag kind={e.kind} />
+      </span>
+      <span className="hidden font-mono text-xs md:block">{e.accountId}</span>
+      <span className="hidden truncate font-mono text-xs text-muted-foreground md:block" title={e.regions.join(", ")}>
+        {regionsShort(e.regions)}
+      </span>
+      <span className="flex min-w-0 items-center gap-3.5 overflow-hidden text-[13px] text-muted-foreground">
+        <Outcome e={e} />
+      </span>
+      <span className="hidden text-right font-mono text-xs text-muted-foreground tabular md:block">{dur === null ? "—" : formatDur(dur, t)}</span>
+      <ChevronRightIcon className="size-4 text-muted-foreground" aria-hidden="true" />
+    </button>
   );
-}
-
-function formatDate(d: Date, lang: string) {
-  return d.toLocaleString(lang, { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false });
-}
-
-function formatDur(s: number, t: (key: string, opts?: Record<string, unknown>) => string) {
-  const m = Math.floor(s / 60);
-  const r = s % 60;
-  return m > 0 ? t("history.durMin", { m, s: String(r).padStart(2, "0") }) : t("history.durSec", { s: r });
 }

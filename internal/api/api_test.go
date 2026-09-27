@@ -3,6 +3,7 @@ package api
 import (
 	"compress/gzip"
 	"context"
+	"encoding/json"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -248,5 +249,31 @@ func TestGzipAndSecurityHeaders(t *testing.T) {
 	srv.Handler().ServeHTTP(rr, req)
 	if rr.Header().Get("Content-Encoding") != "gzip" || rr.Header().Get("Strict-Transport-Security") != "" {
 		t.Fatalf("plain http: %v", rr.Header())
+	}
+}
+
+func TestListJobsScopedToSession(t *testing.T) {
+	srv, sess := newTestServer(t)
+	mine := srv.cfg.Jobs.New(sess.ID, "123456789012", engine.Spec{Mode: engine.ModeScan, Regions: []string{"us-east-1"}, ResourceTypes: []string{"ec2"}})
+	srv.cfg.Jobs.New("other-session", "123456789012", engine.Spec{Mode: engine.ModeScan})
+
+	rr := do(t, srv, http.MethodGet, "/api/jobs", "", sess.ID)
+	if rr.Code != http.StatusOK {
+		t.Fatalf("status %d: %s", rr.Code, rr.Body.String())
+	}
+	var body struct {
+		Jobs []jobs.Brief `json:"jobs"`
+	}
+	if err := json.Unmarshal(rr.Body.Bytes(), &body); err != nil {
+		t.Fatal(err)
+	}
+	if len(body.Jobs) != 1 || body.Jobs[0].ID != mine.ID {
+		t.Fatalf("want only own job %s, got %+v", mine.ID, body.Jobs)
+	}
+	if body.Jobs[0].State != jobs.StateQueued || body.Jobs[0].Regions[0] != "us-east-1" {
+		t.Fatalf("unexpected brief %+v", body.Jobs[0])
+	}
+	if rr := do(t, srv, http.MethodGet, "/api/jobs", "", ""); rr.Code != http.StatusUnauthorized {
+		t.Fatalf("anonymous list: %d", rr.Code)
 	}
 }

@@ -120,10 +120,14 @@ export function ExpandButton({ onClick, label }: { onClick: () => void; label: s
   );
 }
 
-/** Right-aligned action row placed directly above a page's stats block. Renders nothing when empty. */
-export function Toolbar({ children, className }: { children?: React.ReactNode; className?: string }) {
+/**
+ * Action row. Right-aligned above a page's stats block by default; `align="start"`
+ * for the top of a rail, where it lines up with the cards below it. Renders
+ * nothing when empty. Its bottom margin equals the rail's gap, so leave it on.
+ */
+export function Toolbar({ children, className, align = "end" }: { children?: React.ReactNode; className?: string; align?: "start" | "end" }) {
   if (children === null || children === undefined || children === false) return null;
-  return <div className={cn("mb-3 flex flex-wrap items-center justify-end gap-2", className)}>{children}</div>;
+  return <div className={cn("mb-3 flex flex-wrap items-center gap-2", align === "end" ? "justify-end" : "justify-start", className)}>{children}</div>;
 }
 
 export function Rail({ children }: { children: React.ReactNode }) {
@@ -157,5 +161,44 @@ export function TwoCol({ children, rail }: { children: React.ReactNode; rail: Re
       <div className="min-w-0">{children}</div>
       {rail}
     </div>
+  );
+}
+
+/**
+ * Pill-shaped radio group. `sm` is the header menu's row control (icon or
+ * two-letter labels); `md` is the page-level filter.
+ */
+export function Segmented<T extends string>({
+  label,
+  value,
+  options,
+  onChange,
+  size = "sm",
+}: {
+  label: string;
+  value: T;
+  options: { value: T; label: string; icon?: React.ReactNode }[];
+  onChange: (v: T) => void;
+  size?: "sm" | "md";
+}) {
+  return (
+    <span className="inline-flex shrink-0 rounded-lg bg-muted p-0.5" role="group" aria-label={label}>
+      {options.map((o) => (
+        <button
+          key={o.value}
+          type="button"
+          aria-pressed={value === o.value}
+          aria-label={o.icon ? o.label : undefined}
+          title={o.icon ? o.label : undefined}
+          onClick={() => onChange(o.value)}
+          className={cn(
+            "grid place-items-center rounded-md font-medium text-muted-foreground transition-colors hover:text-foreground aria-pressed:bg-popover aria-pressed:text-card-foreground aria-pressed:shadow-xs dark:aria-pressed:bg-accent",
+            size === "sm" ? "h-6 min-w-7 px-[7px] text-xs [&_svg]:size-3.5" : "h-[26px] px-2.5 text-[13px]",
+          )}
+        >
+          {o.icon ?? o.label}
+        </button>
+      ))}
+    </span>
   );
 }
