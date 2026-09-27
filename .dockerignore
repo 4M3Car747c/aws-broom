@@ -1,4 +1,4 @@
-.git
+# .git stays in the context so the build can stamp the version with `git describe`.
 web/node_modules
 web/build
 web/.react-router

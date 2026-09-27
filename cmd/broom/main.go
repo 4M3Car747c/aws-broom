@@ -14,6 +14,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"runtime/debug"
 	"strconv"
 	"syscall"
 	"time"
@@ -25,7 +26,46 @@ import (
 	"github.com/4M3Car747c/aws-broom/internal/web"
 )
 
+// version is stamped by the Dockerfile / Makefile via -ldflags; a plain
+// `go build` falls back to the VCS revision Go records in the binary.
 var version = "dev"
+
+func init() {
+	if version != "dev" {
+		return
+	}
+	if v := vcsVersion(); v != "" {
+		version = v
+	}
+}
+
+// vcsVersion returns "<short sha>[-dirty]" from the build info, or "".
+func vcsVersion() string {
+	info, ok := debug.ReadBuildInfo()
+	if !ok {
+		return ""
+	}
+	var rev string
+	dirty := false
+	for _, kv := range info.Settings {
+		switch kv.Key {
+		case "vcs.revision":
+			rev = kv.Value
+		case "vcs.modified":
+			dirty = kv.Value == "true"
+		}
+	}
+	if rev == "" {
+		return ""
+	}
+	if len(rev) > 7 {
+		rev = rev[:7]
+	}
+	if dirty {
+		rev += "-dirty"
+	}
+	return rev
+}
 
 func main() {
 	cmd := "serve"
