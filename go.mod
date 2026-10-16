@@ -10,13 +10,13 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.51.0
 	github.com/gruntwork-io/cloud-nuke v0.52.1-0.20260910024755-306d2b7794b9
 	github.com/hashicorp/go-multierror v1.1.1
-	github.com/pterm/pterm v0.12.83
+	github.com/pterm/pterm v0.12.84
 	golang.org/x/sync v0.23.0
 )
 
 require (
 	atomicgo.dev/cursor v0.2.0 // indirect
-	atomicgo.dev/keyboard v0.2.9 // indirect
+	atomicgo.dev/keyboard v0.2.10 // indirect
 	atomicgo.dev/schedule v0.1.0 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.7.8 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.20.0 // indirect
@@ -93,18 +93,16 @@ require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/go-errors/errors v1.4.2 // indirect
 	github.com/google/uuid v1.6.0 // indirect
-	github.com/gookit/color v1.6.0 // indirect
 	github.com/gruntwork-io/go-commons v0.17.0 // indirect
 	github.com/hashicorp/errwrap v1.0.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/lithammer/fuzzysearch v1.1.8 // indirect
-	github.com/mattn/go-runewidth v0.0.20 // indirect
+	github.com/mattn/go-runewidth v0.0.24 // indirect
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sirupsen/logrus v1.8.3 // indirect
 	github.com/urfave/cli/v2 v2.10.3 // indirect
-	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
 	golang.org/x/exp v0.0.0-20221106115401-f9659909a136 // indirect
 	golang.org/x/sys v0.47.0 // indirect
