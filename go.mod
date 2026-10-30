@@ -8,7 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/credentials v1.20.5
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.336.0
 	github.com/aws/aws-sdk-go-v2/service/sts v1.51.0
-	github.com/gruntwork-io/cloud-nuke v0.52.1-0.20260910024755-306d2b7794b9
+	github.com/gruntwork-io/cloud-nuke v0.53.0
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/pterm/pterm v0.12.83
 	golang.org/x/sync v0.23.0
