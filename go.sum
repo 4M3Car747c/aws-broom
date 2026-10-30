@@ -188,8 +188,8 @@ github.com/gookit/color v1.4.2/go.mod h1:fqRyamkC1W8uxl+lxCQxOT09l/vYfZ+QeiX3rKQ
 github.com/gookit/color v1.5.0/go.mod h1:43aQb+Zerm/BWh2GnrgOQm7ffz7tvQXEKV6BFMl7wAo=
 github.com/gookit/color v1.6.0 h1:JjJXBTk1ETNyqyilJhkTXJYYigHG24TM9Xa2M1xAhRA=
 github.com/gookit/color v1.6.0/go.mod h1:9ACFc7/1IpHGBW8RwuDm/0YEnhg3dwwXpoMsmtyHfjs=
-github.com/gruntwork-io/cloud-nuke v0.52.1-0.20260910024755-306d2b7794b9 h1:oWd1XUMlHn0/3Zw4IpbV7SzKIhII7oYqiFuKWuVRsOQ=
-github.com/gruntwork-io/cloud-nuke v0.52.1-0.20260910024755-306d2b7794b9/go.mod h1:Ur1/MKn2Jgix+v9SElUz3aW0xzDvcNAu9jU89LDmw+c=
+github.com/gruntwork-io/cloud-nuke v0.53.0 h1:pTpBGOe0Ij9z+8CPt+HUFqiSm+WRLgJT4r+uOkgBeX8=
+github.com/gruntwork-io/cloud-nuke v0.53.0/go.mod h1:TRcsT7srjvS30OK+Fat+eHS3W7S/SxxOgf2SwjYuCS0=
 github.com/gruntwork-io/go-commons v0.17.0 h1:ZwCO7P+NAdH1/NcLmf0kK/SZ/egqWIgHujlbmSzFDX4=
 github.com/gruntwork-io/go-commons v0.17.0/go.mod h1:S98JcR7irPD1bcruSvnqupg+WSJEJ6xaM89fpUZVISk=
 github.com/hashicorp/errwrap v1.0.0 h1:hLrqtEDnRye3+sgx6z4qVLNuviH3MR5aQ0ykNJa/UYA=
